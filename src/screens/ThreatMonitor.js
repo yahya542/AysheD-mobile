@@ -1,228 +1,291 @@
 import React, { useState } from 'react';
 import { View, Text, ScrollView, TouchableOpacity, StyleSheet, Switch } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { C, R } from '../tokens';
 
-const DARK = '#1f130b';
-const DARK_SURFACE = '#2a1a10';
-const DARK_BORDER = '#4d3221';
-const AMBER_CARD = '#3d2719';
-const AMBER_BADGE_BORDER = '#5a3a25';
-const AMBER = '#f59e0b';
-const AMBER_TEXT = '#fbbf24';
-const TEXT_PRIMARY = '#fbf6ee';
-const TEXT_MUTED = '#c9b29e';
-const EMERALD = '#10B981';
-const CRIMSON = '#DC2626';
+const C = {
+    royalBg: '#1e3a8a',
+    primaryDark: '#0f172a',
+    cardBlue: '#172554',
+    cardBlueLight: '#1e40af',
+    accentYellow: '#fbbf24',
+    accentYellowHover: '#f59e0b',
+    borderBlue: '#2563eb',
+    white: '#ffffff',
+    slate500: '#64748b',
+    blue100: '#dbeafe',
+    blue200: '#bfdbfe',
+    blue300: '#93c5fd',
+    red500: '#ef4444',
+    red600: '#dc2626',
+    green500: '#10b981',
+};
 
-export default function ThreatMonitor({ user, onLogout, onNavigate }) {
+export default function ThreatMonitor({ user, onLogout }) {
     const [panicMode, setPanicMode] = useState(false);
-
-    const togglePanic = (val) => {
-        if (val) {
-            // In real app: show confirm dialog
-        }
-        setPanicMode(val);
-    };
+    const email = user?.identifier || 'superadmin@ayshed.biz.id';
 
     return (
         <SafeAreaView style={s.root}>
             {/* Header */}
             <View style={s.header}>
-                <View style={{ flexDirection: 'row', alignItems: 'center', gap: 14 }}>
-                    <View style={s.logoTile}><Text style={{ fontSize: 18 }}>🛡</Text></View>
+                <View style={{ flexDirection: 'row', alignItems: 'center', gap: 12 }}>
+                    <View style={s.headerAvatar}>
+                        <Text style={{ fontSize: 13, fontWeight: '700', color: C.primaryDark }}>SA</Text>
+                    </View>
                     <View>
-                        <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
-                            <Text style={s.logoName}>AysheD</Text>
-                            <View style={s.socBadge}><Text style={s.socBadgeText}>SOC EKSEKUTIF</Text></View>
+                        <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6 }}>
+                            <Text style={s.headerTitle}>SecOps Executive</Text>
+                            <View style={s.socBadge}>
+                                <View style={s.socBadgeDot} />
+                                <Text style={s.socBadgeText}>SOC AKTIF</Text>
+                            </View>
                         </View>
-                        <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6, marginTop: 2 }}>
-                            <View style={{ width: 8, height: 8, borderRadius: 4, backgroundColor: EMERALD }} />
-                            <Text style={{ fontFamily: 'monospace', fontSize: 10, color: '#34d399', letterSpacing: 1.5, fontWeight: '500' }}>GATEWAY AMAN</Text>
-                        </View>
+                        <Text style={s.headerSubtitle}>{email}</Text>
                     </View>
                 </View>
-                <TouchableOpacity style={s.keyBtn}><Text style={{ fontSize: 17 }}>🔑</Text></TouchableOpacity>
+                <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
+                    <TouchableOpacity style={s.notifBtn}><Text style={{ fontSize: 16 }}>🔔</Text></TouchableOpacity>
+                    <TouchableOpacity style={s.logoutBtn} onPress={onLogout}>
+                        <Text style={s.logoutText}>Keluar</Text>
+                    </TouchableOpacity>
+                </View>
             </View>
 
             <ScrollView contentContainerStyle={s.scroll} showsVerticalScrollIndicator={false}>
-                {/* Panic Mode Card */}
-                <View style={s.card}>
-                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start', gap: 16 }}>
-                        <View style={{ flex: 1, gap: 6 }}>
-                            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}>
-                                <View style={s.panicIcon}><Text style={{ fontSize: 16 }}>🔄</Text></View>
-                                <Text style={s.cardTitle}>Mode Panik Global</Text>
+                {/* Banner */}
+                <View style={s.userCard}>
+                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 6 }}>
+                        <Text style={{ fontSize: 12, fontWeight: '500', color: C.blue200 }}>Sesi Keamanan Aktif</Text>
+                        <View style={s.radarBadge}>
+                            <View style={s.radarDot} />
+                            <Text style={s.radarText}>LIVE THREAT RADAR</Text>
+                        </View>
+                    </View>
+                    <Text style={{ fontSize: 14, fontWeight: '700', fontFamily: 'monospace', color: C.white, letterSpacing: -0.5 }}>{email}</Text>
+                    <View style={s.clearanceBanner}>
+                        <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6 }}>
+                            <Text style={{ fontSize: 15, color: '#facc15' }}>🛡️</Text>
+                            <Text style={s.clearanceText}>SUPERADMIN • Level 4 Clearance</Text>
+                        </View>
+                        <Text style={{ fontSize: 11, fontFamily: 'monospace', color: C.blue300 }}>ID: SEC-8092</Text>
+                    </View>
+                </View>
+
+                {/* Segmented Tabs (Visual Only for Threat Screen) */}
+                <View style={s.tabWrap}>
+                    <View style={[s.tabBtn, s.tabBtnActive]}>
+                        <Text style={{ fontSize: 16, color: '#facc15' }}>🛡️</Text>
+                        <Text style={s.tabTextActive}>THREATS</Text>
+                    </View>
+                    <View style={s.tabBtn}>
+                        <Text style={{ fontSize: 16 }}>🧾</Text>
+                        <Text style={s.tabText}>AUDIT LOGS</Text>
+                    </View>
+                </View>
+
+                {/* Global Isolation Protocol */}
+                <View style={s.panicCard}>
+                    <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                        <View style={{ flexDirection: 'row', gap: 12, flex: 1 }}>
+                            <View style={s.panicIconWrap}><Text style={{ fontSize: 20 }}>🔄</Text></View>
+                            <View style={{ flex: 1 }}>
+                                <View style={{ flexDirection: 'row', alignItems: 'center', flexWrap: 'wrap', gap: 8 }}>
+                                    <Text style={{ fontSize: 14, fontWeight: '700', color: C.white }}>Protokol Isolasi Sesi Terkoordinasi</Text>
+                                    <View style={s.guardrailBadge}><Text style={s.guardrailText}>Safe Guardrail</Text></View>
+                                </View>
+                                <Text style={{ fontSize: 12, color: C.blue100, marginTop: 4, lineHeight: 18 }}>Tindakan administratif graceful: pemutusan ingress instan & pencabutan sesi tanpa pemutusan mendadak.</Text>
                             </View>
-                            <Text style={s.cardBody}>Pemutusan ingress instan dan pencabutan sesi di seluruh node jaringan.</Text>
                         </View>
                         <Switch
                             value={panicMode}
-                            onValueChange={togglePanic}
-                            trackColor={{ false: '#d4d4d4', true: CRIMSON }}
-                            thumbColor={'#fff'}
+                            onValueChange={setPanicMode}
+                            trackColor={{ false: C.cardBlueLight, true: C.red500 }}
+                            thumbColor={C.white}
+                            style={{ transform: [{ scale: 0.9 }], marginLeft: 8 }}
                         />
                     </View>
-                    <View style={s.cardFoot}>
-                        <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
-                            <View style={{ width: 8, height: 8, borderRadius: 4, backgroundColor: EMERALD }} />
-                            <Text style={s.cardFootSub}>Failover Siaga</Text>
+                    <View style={s.panicFoot}>
+                        <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6 }}>
+                            <View style={{ width: 8, height: 8, borderRadius: 4, backgroundColor: C.green500 }} />
+                            <Text style={{ fontSize: 11, fontWeight: '500', color: C.blue200 }}>Failover Standby: Cluster Ready</Text>
                         </View>
-                        <Text style={s.cardFootStatus}>ISOLASI NONAKTIF</Text>
+                        <View style={s.isolationBadge}><Text style={s.isolationText}>ISOLASI NONAKTIF</Text></View>
                     </View>
                 </View>
 
-                {/* Metric Summary */}
-                <View style={s.metricGrid}>
-                    {[
-                        { label: 'Terblokir', value: '14', sub: '+4 hari ini', subColor: CRIMSON },
-                        { label: 'Brute Force', value: '3', sub: 'rentang 10m', subColor: '#d97706' },
-                        { label: 'Anomali', value: '1', sub: 'Ditandai', subColor: '#78716C' },
-                    ].map((m) => (
-                        <View key={m.label} style={s.metricCard}>
-                            <Text style={s.metricLabel}>{m.label}</Text>
-                            <Text style={s.metricValue}>{m.value}</Text>
-                            <Text style={[s.metricSub, { color: m.subColor }]}>{m.sub}</Text>
-                        </View>
-                    ))}
+                {/* Metrics Grid */}
+                <View style={{ flexDirection: 'row', gap: 10 }}>
+                    <View style={s.metricCard}>
+                        <Text style={s.metricLabel}>Terblokir</Text>
+                        <Text style={s.metricValueWhite}>14</Text>
+                        <View style={s.metricSubRed}><Text style={{ fontSize: 11 }}>⬆️</Text><Text style={s.metricSubRedText}>+4 hari ini</Text></View>
+                    </View>
+                    <View style={s.metricCardYellow}>
+                        <Text style={s.metricLabelDark}>Brute Force</Text>
+                        <Text style={s.metricValueDark}>3</Text>
+                        <View style={s.metricSubDark}><Text style={s.metricSubDarkText}>rentang 10m</Text></View>
+                    </View>
+                    <View style={s.metricCard}>
+                        <Text style={s.metricLabel}>Anomali</Text>
+                        <Text style={s.metricValueWhite}>1</Text>
+                        <View style={s.metricSubYellow}><Text style={s.metricSubYellowText}>Ditandai</Text></View>
+                    </View>
                 </View>
 
-                {/* Incidents */}
-                <View style={s.incidentsSection}>
-                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingHorizontal: 4, marginBottom: 16 }}>
-                        <Text style={s.incidentsTitle}>Insiden Aktif</Text>
-                        <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center', gap: 6 }}>
-                            <Text style={{ fontFamily: 'monospace', fontSize: 11, color: AMBER_TEXT, fontWeight: '600' }}>Sinkron Langsung</Text>
-                            <Text style={{ color: AMBER_TEXT }}>🔄</Text>
+                {/* Incidents Header */}
+                <View style={{ marginTop: 4, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingHorizontal: 2 }}>
+                    <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
+                        <View style={{ width: 8, height: 8, borderRadius: 4, backgroundColor: '#facc15' }} />
+                        <Text style={{ fontSize: 12, fontWeight: '700', fontFamily: 'monospace', color: C.white, textTransform: 'uppercase', letterSpacing: 1.5 }}>Insiden Keamanan Aktif</Text>
+                        <View style={s.incidentsCount}><Text style={s.incidentsCountText}>2 Perlu Tindakan</Text></View>
+                    </View>
+                    <TouchableOpacity style={s.syncBtn}>
+                        <Text style={{ fontSize: 13 }}>🔄</Text>
+                        <Text style={{ fontSize: 11, fontWeight: '700', fontFamily: 'monospace', color: C.primaryDark }}>Live Sync</Text>
+                    </TouchableOpacity>
+                </View>
+
+                {/* Incident 1 */}
+                <View style={[s.incidentCard, { borderColor: C.red500 }]}>
+                    <View style={[s.incidentStripe, { backgroundColor: C.red500 }]} />
+                    <View style={s.incidentInner}>
+                        <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 10 }}>
+                            <View style={{ flex: 1, gap: 4 }}>
+                                <View style={{ flexDirection: 'row', gap: 8, alignItems: 'center', flexWrap: 'wrap' }}>
+                                    <Text style={{ fontFamily: 'monospace', fontSize: 14, fontWeight: '700', color: C.white }}>ID Pengguna #8841</Text>
+                                    <View style={s.criticalBadge}><Text style={s.criticalBadgeText}>● Kritis</Text></View>
+                                </View>
+                                <Text style={{ fontSize: 12, color: C.blue100 }}>Lonjakan impulsif <Text style={{ fontFamily: 'monospace', backgroundColor: C.red600, color: C.white, paddingHorizontal: 6, paddingVertical: 2, borderRadius: 4, fontSize: 11, fontWeight: '700' }}> 200 req/s </Text> pada endpoint autentikasi privat</Text>
+                            </View>
+                            <Text style={{ fontFamily: 'monospace', fontSize: 11, color: C.blue300 }}>14 mnt lalu</Text>
+                        </View>
+                        <TouchableOpacity style={s.dangerBtn}>
+                            <Text style={{ fontSize: 15 }}>⚡</Text>
+                            <Text style={s.dangerBtnText}>Putus JWT & Tangguhkan Sesi</Text>
                         </TouchableOpacity>
                     </View>
+                </View>
 
-                    {/* Incident 1 */}
-                    <View style={s.incidentCard}>
-                        <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 12 }}>
-                            <View style={{ gap: 4 }}>
-                                <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}>
-                                    <Text style={s.incidentId}>ID Pengguna #8841</Text>
-                                    <View style={s.badgeCritical}><Text style={s.badgeCriticalText}>Kritis</Text></View>
+                {/* Incident 2 */}
+                <View style={[s.incidentCard, { borderColor: C.accentYellowHover }]}>
+                    <View style={[s.incidentStripe, { backgroundColor: C.accentYellowHover }]} />
+                    <View style={s.incidentInner}>
+                        <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 10 }}>
+                            <View style={{ flex: 1, gap: 4 }}>
+                                <View style={{ flexDirection: 'row', gap: 8, alignItems: 'center', flexWrap: 'wrap' }}>
+                                    <Text style={{ fontFamily: 'monospace', fontSize: 14, fontWeight: '700', color: C.white }}>185.220.101.45</Text>
+                                    <View style={s.warnBadge}><Text style={s.warnBadgeText}>▲ Peringatan</Text></View>
                                 </View>
-                                <Text style={s.incidentBody}>
-                                    Lonjakan impulsif <Text style={s.codeTag}>200 req/s</Text> pada autentikasi privat
-                                </Text>
+                                <Text style={{ fontSize: 12, color: C.blue100 }}>45 upaya login gagal terdeteksi pada <Text style={{ fontFamily: 'monospace', backgroundColor: '#facc15', color: C.primaryDark, paddingHorizontal: 6, paddingVertical: 2, borderRadius: 4, fontSize: 11, fontWeight: '700' }}> /api/v1/login </Text></Text>
                             </View>
-                            <Text style={s.incidentTime}>14 mnt lalu</Text>
+                            <Text style={{ fontFamily: 'monospace', fontSize: 11, color: C.blue300 }}>23 mnt lalu</Text>
                         </View>
-                        <TouchableOpacity style={s.revokeBtn}>
-                            <Text style={{ fontSize: 14 }}>⚡</Text>
-                            <Text style={s.revokeBtnText}>Putus JWT & Tangguhkan</Text>
-                        </TouchableOpacity>
-                    </View>
-
-                    {/* Incident 2 */}
-                    <View style={s.incidentCard}>
-                        <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 12 }}>
-                            <View style={{ gap: 4 }}>
-                                <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}>
-                                    <Text style={s.incidentIp}>185.220.101.45</Text>
-                                    <View style={s.badgeWarn}><Text style={s.badgeWarnText}>Peringatan</Text></View>
-                                </View>
-                                <Text style={s.incidentBody}>45 upaya login gagal pada <Text style={s.codeTag}>/api/v1/login</Text></Text>
-                            </View>
-                            <Text style={s.incidentTime}>23 mnt lalu</Text>
-                        </View>
-                        <View style={{ flexDirection: 'row', gap: 10 }}>
-                            <TouchableOpacity style={s.unblockBtn}><Text style={s.unblockBtnText}>Lepas Blokir</Text></TouchableOpacity>
-                            <TouchableOpacity style={s.blockIpBtn}>
-                                <Text style={{ fontSize: 13 }}>🚫</Text>
-                                <Text style={s.blockIpBtnText}>Blokir Permanen IP</Text>
+                        <View style={{ flexDirection: 'row', gap: 10, borderTopWidth: 1, borderTopColor: C.cardBlueLight, paddingTop: 12 }}>
+                            <TouchableOpacity style={s.btnOutline}>
+                                <Text style={s.btnOutlineText}>Lepas Blokir</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity style={s.btnWarning}>
+                                <Text style={{ fontSize: 15 }}>🚫</Text>
+                                <Text style={s.btnWarningText}>Blokir IP</Text>
                             </TouchableOpacity>
                         </View>
                     </View>
-
-                    {/* Incident 3 */}
-                    <View style={s.incidentCard}>
-                        <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-                            <View style={{ gap: 4 }}>
-                                <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}>
-                                    <Text style={s.incidentIp}>91.240.118.232</Text>
-                                    <View style={s.badgeMitigated}><Text style={s.badgeMitigatedText}>Teredam</Text></View>
-                                </View>
-                                <Text style={s.incidentBody}>Brute force kredensial Port 22 (1.489 ditolak)</Text>
-                            </View>
-                            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6 }}>
-                                <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: EMERALD }} />
-                                <Text style={{ fontFamily: 'monospace', fontSize: 11, color: '#059669', fontWeight: '600' }}>Blokir UFW</Text>
-                            </View>
-                        </View>
-                    </View>
                 </View>
 
-                <View style={{ height: 80 }} />
+                {/* Log Redirect */}
+                <TouchableOpacity style={s.logRedirect}>
+                    <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
+                        <Text style={{ fontSize: 18 }}>💻</Text>
+                        <Text style={{ fontSize: 12, fontWeight: '500', color: C.blue100 }}>Periksa riwayat log autentikasi lengkap</Text>
+                    </View>
+                    <Text style={{ fontSize: 12, fontWeight: '700', fontFamily: 'monospace', color: '#facc15' }}>Buka Logs →</Text>
+                </TouchableOpacity>
+
+                <View style={{ height: 40 }} />
             </ScrollView>
 
-            {/* Bottom Nav */}
-            <View style={s.navBar}>
-                <NavItem icon="👛" label="Buku Kas" />
-                <NavItem icon="📡" label="Ancaman" active />
-                <NavItem icon="🔗" label="Node" />
-                <NavItem icon="🛡" label="Keamanan" />
+            {/* Visual Bottom Nav */}
+            <View style={s.bottomNav}>
+                <View style={{ flex: 1, alignItems: 'center', gap: 2 }}>
+                    <Text style={{ fontSize: 22 }}>🛡️</Text>
+                    <Text style={{ fontSize: 11, fontWeight: '700', color: '#facc15', letterSpacing: 0.5 }}>Threats</Text>
+                </View>
+                <View style={{ flex: 1, alignItems: 'center', gap: 2, opacity: 0.7 }}>
+                    <Text style={{ fontSize: 22 }}>🧾</Text>
+                    <Text style={{ fontSize: 11, fontWeight: '500', color: C.blue300, letterSpacing: 0.5 }}>Audit Logs</Text>
+                </View>
             </View>
         </SafeAreaView>
     );
 }
 
-function NavItem({ icon, label, active }) {
-    return (
-        <TouchableOpacity style={[s.navItem, active && s.navItemActive]}>
-            <Text style={{ fontSize: 22 }}>{icon}</Text>
-            <Text style={[s.navLabel, active && s.navLabelActive]}>{label}</Text>
-        </TouchableOpacity>
-    );
-}
-
 const s = StyleSheet.create({
-    root: { flex: 1, backgroundColor: DARK },
-    header: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingHorizontal: 24, paddingVertical: 16, backgroundColor: 'rgba(42,26,16,0.9)', borderBottomWidth: 1, borderBottomColor: DARK_BORDER },
-    logoTile: { width: 40, height: 40, borderRadius: R.xl, backgroundColor: AMBER, alignItems: 'center', justifyContent: 'center' },
-    logoName: { fontSize: 16, fontWeight: '700', color: TEXT_PRIMARY },
-    socBadge: { paddingHorizontal: 8, paddingVertical: 3, borderRadius: R.sm, backgroundColor: AMBER_CARD, borderWidth: 1, borderColor: AMBER_BADGE_BORDER },
-    socBadgeText: { fontFamily: 'monospace', fontSize: 9, color: AMBER_TEXT, fontWeight: '600', letterSpacing: 1 },
-    keyBtn: { width: 40, height: 40, borderRadius: R.xl, backgroundColor: '#342013', borderWidth: 1, borderColor: '#523724', alignItems: 'center', justifyContent: 'center' },
-    scroll: { padding: 20, gap: 16 },
-    card: { backgroundColor: C.white, borderRadius: R['3xl'], borderWidth: 1, borderColor: '#E7E5E4', padding: 20, shadowColor: '#000', shadowOpacity: 0.04, shadowRadius: 6, elevation: 2 },
-    panicIcon: { width: 28, height: 28, borderRadius: R.lg, backgroundColor: '#FEE2E2', borderWidth: 1, borderColor: '#FECACA', alignItems: 'center', justifyContent: 'center' },
-    cardTitle: { fontSize: 17, fontWeight: '700', color: '#0C0A09' },
-    cardBody: { fontSize: 13, color: '#57534E', lineHeight: 20 },
-    cardFoot: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingTop: 14, marginTop: 14, borderTopWidth: 1, borderTopColor: '#E7E5E4' },
-    cardFootSub: { fontSize: 11, fontFamily: 'monospace', color: '#57534E' },
-    cardFootStatus: { fontSize: 11, fontFamily: 'monospace', color: '#0C0A09', fontWeight: '700', letterSpacing: 1 },
-    metricGrid: { flexDirection: 'row', gap: 12 },
-    metricCard: { flex: 1, backgroundColor: C.white, borderRadius: R.xl, borderWidth: 1, borderColor: '#E7E5E4', padding: 16, alignItems: 'center' },
-    metricLabel: { fontFamily: 'monospace', fontSize: 10, color: '#78716C', fontWeight: '600', letterSpacing: 1, textTransform: 'uppercase', marginBottom: 4 },
-    metricValue: { fontSize: 28, fontWeight: '700', color: '#0C0A09', marginBottom: 4 },
-    metricSub: { fontFamily: 'monospace', fontSize: 10, fontWeight: '600' },
-    incidentsSection: {},
-    incidentsTitle: { fontSize: 13, fontWeight: '700', color: AMBER, textTransform: 'uppercase', letterSpacing: 2 },
-    incidentCard: { backgroundColor: C.white, borderRadius: R['3xl'], borderWidth: 1, borderColor: '#E7E5E4', padding: 20, marginBottom: 16 },
-    incidentId: { fontSize: 16, fontWeight: '700', color: '#0C0A09' },
-    incidentIp: { fontFamily: 'monospace', fontSize: 14, fontWeight: '700', color: '#0C0A09' },
-    incidentBody: { fontSize: 13, color: '#57534E', lineHeight: 20 },
-    incidentTime: { fontFamily: 'monospace', fontSize: 11, color: '#78716C' },
-    codeTag: { fontFamily: 'monospace', fontSize: 12, color: '#92400E', backgroundColor: '#FEF3C7', paddingHorizontal: 4 },
-    badgeCritical: { backgroundColor: '#FEE2E2', paddingHorizontal: 10, paddingVertical: 3, borderRadius: R.full, borderWidth: 1, borderColor: '#FECACA' },
-    badgeCriticalText: { fontFamily: 'monospace', fontSize: 10, fontWeight: '700', color: '#B91C1C' },
-    badgeWarn: { backgroundColor: '#FFFBEB', paddingHorizontal: 10, paddingVertical: 3, borderRadius: R.full, borderWidth: 1, borderColor: '#FDE68A' },
-    badgeWarnText: { fontFamily: 'monospace', fontSize: 10, fontWeight: '600', color: '#92400E' },
-    badgeMitigated: { backgroundColor: '#ECFDF5', paddingHorizontal: 10, paddingVertical: 3, borderRadius: R.full, borderWidth: 1, borderColor: '#A7F3D0' },
-    badgeMitigatedText: { fontFamily: 'monospace', fontSize: 10, fontWeight: '600', color: '#065F46' },
-    revokeBtn: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 8, padding: 14, backgroundColor: CRIMSON, borderRadius: R.lg },
-    revokeBtnText: { fontFamily: 'monospace', fontSize: 12, fontWeight: '600', color: '#fff' },
-    unblockBtn: { flex: 1, paddingVertical: 10, alignItems: 'center', backgroundColor: '#F4F4F5', borderRadius: R.lg, borderWidth: 1, borderColor: '#D4D4D8' },
-    unblockBtnText: { fontFamily: 'monospace', fontSize: 12, fontWeight: '500', color: '#1C1917' },
-    blockIpBtn: { flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 6, paddingVertical: 10, backgroundColor: '#FEF2F2', borderRadius: R.lg, borderWidth: 1, borderColor: '#FECACA' },
-    blockIpBtnText: { fontFamily: 'monospace', fontSize: 12, fontWeight: '600', color: CRIMSON },
-    navBar: { flexDirection: 'row', justifyContent: 'space-around', backgroundColor: C.white, borderTopWidth: 1, borderTopColor: '#E7E5E4', paddingVertical: 8 },
-    navItem: { alignItems: 'center', paddingHorizontal: 12, paddingVertical: 6, borderRadius: R.xl },
-    navItemActive: { backgroundColor: '#FFFBEB', borderWidth: 1, borderColor: '#FDE68A' },
-    navLabel: { fontFamily: 'monospace', fontSize: 10, color: '#78716C', marginTop: 4 },
-    navLabelActive: { fontWeight: '700', color: '#1C1917' },
+    root: { flex: 1, backgroundColor: C.royalBg },
+    header: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', backgroundColor: C.primaryDark, borderBottomWidth: 1, borderBottomColor: C.borderBlue, paddingHorizontal: 16, paddingVertical: 14, shadowColor: '#000', shadowOpacity: 0.2, shadowRadius: 4, elevation: 4 },
+    headerAvatar: { width: 40, height: 40, borderRadius: 20, backgroundColor: C.accentYellowHover, borderWidth: 2, borderColor: '#fbbf24', alignItems: 'center', justifyContent: 'center' },
+    headerTitle: { fontSize: 14, fontWeight: '700', color: C.white },
+    socBadge: { flexDirection: 'row', alignItems: 'center', gap: 4, backgroundColor: '#facc15', paddingHorizontal: 6, paddingVertical: 2, borderRadius: 4 },
+    socBadgeDot: { width: 6, height: 6, borderRadius: 3, backgroundColor: C.primaryDark },
+    socBadgeText: { fontSize: 10, fontWeight: '700', fontFamily: 'monospace', color: C.primaryDark },
+    headerSubtitle: { fontSize: 11, fontWeight: '500', fontFamily: 'monospace', color: C.blue200, marginTop: 2 },
+    notifBtn: { width: 32, height: 32, borderRadius: 8, backgroundColor: C.cardBlueLight, borderWidth: 1, borderColor: '#3b82f6', alignItems: 'center', justifyContent: 'center' },
+    logoutBtn: { backgroundColor: C.accentYellowHover, paddingHorizontal: 10, paddingVertical: 4, borderRadius: 8, borderWidth: 1, borderColor: '#d97706' },
+    logoutText: { fontSize: 12, fontWeight: '600', fontFamily: 'monospace', color: C.primaryDark },
+    scroll: { padding: 16, gap: 16 },
+
+    userCard: { backgroundColor: C.cardBlue, borderWidth: 1, borderColor: C.borderBlue, borderRadius: 12, padding: 16, shadowColor: '#000', shadowOpacity: 0.1, shadowRadius: 4, elevation: 3 },
+    radarBadge: { flexDirection: 'row', alignItems: 'center', gap: 4, backgroundColor: C.accentYellowHover, paddingHorizontal: 8, paddingVertical: 2, borderRadius: 12 },
+    radarDot: { width: 6, height: 6, borderRadius: 3, backgroundColor: C.primaryDark },
+    radarText: { fontSize: 10, fontWeight: '700', fontFamily: 'monospace', color: C.primaryDark, letterSpacing: 0.5 },
+    clearanceBanner: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginTop: 10, paddingTop: 10, borderTopWidth: 1, borderTopColor: C.cardBlueLight },
+    clearanceText: { fontSize: 11, fontWeight: '500', color: C.blue100 },
+
+    tabWrap: { flexDirection: 'row', backgroundColor: C.primaryDark, borderRadius: 12, padding: 4, borderWidth: 1, borderColor: 'rgba(37,99,235,0.6)' },
+    tabBtn: { flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 6, paddingVertical: 10, borderRadius: 8 },
+    tabBtnActive: { backgroundColor: C.borderBlue, shadowColor: '#000', shadowOpacity: 0.1, shadowRadius: 2, elevation: 2 },
+    tabTextActive: { fontSize: 12, fontWeight: '600', color: C.white },
+    tabText: { fontSize: 12, fontWeight: '600', color: C.blue200 },
+
+    panicCard: { backgroundColor: C.cardBlue, borderWidth: 1, borderColor: C.borderBlue, borderRadius: 12, padding: 16 },
+    panicIconWrap: { width: 36, height: 36, borderRadius: 12, backgroundColor: C.accentYellowHover, alignItems: 'center', justifyContent: 'center' },
+    guardrailBadge: { backgroundColor: C.cardBlueLight, paddingHorizontal: 6, paddingVertical: 2, borderRadius: 4, borderWidth: 1, borderColor: '#3b82f6' },
+    guardrailText: { fontSize: 10, fontWeight: '600', fontFamily: 'monospace', color: C.blue100 },
+    panicFoot: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginTop: 14, paddingTop: 12, borderTopWidth: 1, borderTopColor: C.cardBlueLight },
+    isolationBadge: { backgroundColor: C.primaryDark, paddingHorizontal: 8, paddingVertical: 2, borderRadius: 4, borderWidth: 1, borderColor: C.borderBlue },
+    isolationText: { fontSize: 11, fontWeight: '700', fontFamily: 'monospace', color: '#facc15', letterSpacing: 0.5 },
+
+    metricCard: { flex: 1, backgroundColor: C.cardBlue, borderWidth: 1, borderColor: C.borderBlue, borderRadius: 12, padding: 14, alignItems: 'center' },
+    metricCardYellow: { flex: 1, backgroundColor: C.accentYellowHover, borderWidth: 1, borderColor: C.accentYellow, borderRadius: 12, padding: 14, alignItems: 'center', shadowColor: '#000', shadowOpacity: 0.2, shadowRadius: 8, elevation: 4 },
+    metricLabel: { fontSize: 10, fontWeight: '600', fontFamily: 'monospace', color: C.blue200, textTransform: 'uppercase', marginBottom: 2 },
+    metricLabelDark: { fontSize: 10, fontWeight: '700', fontFamily: 'monospace', color: C.primaryDark, textTransform: 'uppercase', marginBottom: 2 },
+    metricValueWhite: { fontSize: 24, fontWeight: '700', fontFamily: 'monospace', color: C.white, marginBottom: 6 },
+    metricValueDark: { fontSize: 24, fontWeight: '900', fontFamily: 'monospace', color: C.primaryDark, marginBottom: 6 },
+    metricSubRed: { flexDirection: 'row', alignItems: 'center', gap: 4, backgroundColor: C.red600, paddingHorizontal: 6, paddingVertical: 2, borderRadius: 4 },
+    metricSubRedText: { fontSize: 10, fontWeight: '700', fontFamily: 'monospace', color: C.white },
+    metricSubDark: { backgroundColor: C.primaryDark, paddingHorizontal: 6, paddingVertical: 2, borderRadius: 4 },
+    metricSubDarkText: { fontSize: 10, fontWeight: '700', fontFamily: 'monospace', color: C.white },
+    metricSubYellow: { backgroundColor: '#facc15', paddingHorizontal: 6, paddingVertical: 2, borderRadius: 4 },
+    metricSubYellowText: { fontSize: 10, fontWeight: '700', fontFamily: 'monospace', color: C.primaryDark },
+
+    incidentsCount: { backgroundColor: C.accentYellowHover, paddingHorizontal: 6, paddingVertical: 2, borderRadius: 12 },
+    incidentsCountText: { fontSize: 10, fontWeight: '700', fontFamily: 'monospace', color: C.primaryDark },
+    syncBtn: { flexDirection: 'row', alignItems: 'center', gap: 4, backgroundColor: '#facc15', paddingHorizontal: 8, paddingVertical: 2, borderRadius: 6 },
+
+    incidentCard: { backgroundColor: C.cardBlue, borderRadius: 12, borderWidth: 1, overflow: 'hidden', flexDirection: 'row' },
+    incidentStripe: { width: 6 },
+    incidentInner: { flex: 1, padding: 16, paddingLeft: 12 },
+    criticalBadge: { backgroundColor: C.red600, paddingHorizontal: 8, paddingVertical: 2, borderRadius: 12 },
+    criticalBadgeText: { fontSize: 10, fontWeight: '700', fontFamily: 'monospace', color: C.white },
+    warnBadge: { backgroundColor: C.accentYellowHover, paddingHorizontal: 8, paddingVertical: 2, borderRadius: 12 },
+    warnBadgeText: { fontSize: 10, fontWeight: '700', fontFamily: 'monospace', color: C.primaryDark },
+    dangerBtn: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 6, backgroundColor: C.red600, paddingVertical: 10, borderRadius: 8, marginTop: 12, borderTopWidth: 1, borderTopColor: C.cardBlueLight },
+    dangerBtnText: { fontSize: 12, fontWeight: '700', fontFamily: 'monospace', color: C.white },
+    btnOutline: { flex: 1, paddingVertical: 8, alignItems: 'center', borderWidth: 1, borderColor: '#3b82f6', borderRadius: 8, backgroundColor: C.cardBlueLight },
+    btnOutlineText: { fontSize: 12, fontWeight: '600', color: C.white },
+    btnWarning: { flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 6, paddingVertical: 8, backgroundColor: C.accentYellowHover, borderRadius: 8 },
+    btnWarningText: { fontSize: 12, fontWeight: '700', color: C.primaryDark },
+
+    logRedirect: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', backgroundColor: C.cardBlue, borderWidth: 1, borderColor: C.borderBlue, borderRadius: 12, padding: 14 },
+
+    bottomNav: { flexDirection: 'row', justifyContent: 'space-around', backgroundColor: C.primaryDark, borderTopWidth: 1, borderTopColor: C.borderBlue, paddingVertical: 8, paddingBottom: 16 }
 });

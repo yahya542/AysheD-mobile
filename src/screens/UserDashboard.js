@@ -11,7 +11,7 @@ export default function UserDashboard({ user, onLogout }) {
                 <View style={styles.header}>
                     <View>
                         <Text style={styles.greeting}>Welcome,</Text>
-                        <Text style={styles.username}>{user.identifier}</Text>
+                        <Text style={styles.username}>{user.email}</Text>
                     </View>
                     <TouchableOpacity style={styles.logoutBtn} onPress={onLogout}>
                         <Text style={styles.logoutText}>LOGOUT</Text>

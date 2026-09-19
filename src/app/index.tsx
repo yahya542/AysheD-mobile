@@ -3,25 +3,25 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 import LoginScreen from '../screens/LoginScreen';
 import FinancialLedger from '../screens/FinancialLedger';
-import ThreatMonitor from '../screens/ThreatMonitor';
-import DevSecOpsNodes from '../screens/DevSecOpsNodes';
+import SuperAdminDashboard from '../screens/SuperAdminDashboard';
 
 export default function App() {
   const [user, setUser] = useState(null);
-  const [activeTab, setActiveTab] = useState('ledger');
 
-  // User role reset on logout
   const handleLogout = () => {
     setUser(null);
-    setActiveTab('ledger');
   };
 
-  // Login handler from LoginScreen
   const handleLogin = (userData) => {
-    setUser(userData);
-    setActiveTab('ledger');
+    // PROTEKSI: Pastikan userData yang masuk tidak null/undefined sebelum dimasukkan ke state
+    if (userData) {
+      setUser(userData);
+    } else {
+      console.warn("Data user yang dikirim setelah login kosong!");
+    }
   };
 
+  // 1. Jika user belum login, tampilkan layar login
   if (!user) {
     return (
       <SafeAreaProvider>
@@ -30,25 +30,20 @@ export default function App() {
     );
   }
 
-  // User role: only ledger
-  if (user.role === 'user') {
+  // 2. PROTEKSI DENGAN TANDA TANYA (?.)
+  // Jika user ada tetapi tidak punya role, dia tidak akan membuat aplikasi jadi merah/crash
+  if (user?.role === 'superadmin') {
     return (
       <SafeAreaProvider>
-        <FinancialLedger user={user} onLogout={handleLogout} />
+        <SuperAdminDashboard user={user} onLogout={handleLogout} />
       </SafeAreaProvider>
     );
   }
 
-  // Superadmin: tab navigation across all screens
-  const screens = {
-    ledger: <FinancialLedger user={user} onLogout={handleLogout} />,
-    threats: <ThreatMonitor user={user} onLogout={handleLogout} />,
-    nodes: <DevSecOpsNodes user={user} onLogout={handleLogout} />,
-  };
-
+  // 3. Fallback jika bukan superadmin (Regular User)
   return (
     <SafeAreaProvider>
-      {screens[activeTab] ?? screens.ledger}
+      <FinancialLedger user={user} onLogout={handleLogout} />
     </SafeAreaProvider>
   );
 }
