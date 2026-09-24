@@ -91,6 +91,17 @@ async function restoreSession() {
   }
 }
 
+async function getLoginLogs() {
+  const token = await getToken();
+  if (!token) {
+    throw new Error('No token found');
+  }
+  return authApi.loginLogs(token);
+} 
+
+
+
+
 export const auth = {
   getToken,
   setToken,
@@ -102,4 +113,5 @@ export const auth = {
   register,
   logout,
   restoreSession,
+  getLoginLogs,
 };

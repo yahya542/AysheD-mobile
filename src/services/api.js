@@ -41,6 +41,7 @@ export const authApi = {
   register: (payload) => request(APISEC_BASE_URL, 'auth/register', { method: 'POST', body: JSON.stringify(payload) }),
   me: (token) => request(APISEC_BASE_URL, 'auth/me', { headers: { Authorization: `Bearer ${token}` } }),
   logout: (token) => request(APISEC_BASE_URL, 'auth/logout', { method: 'POST', headers: { Authorization: `Bearer ${token}` } }),
+  loginLogs: (token) => request(APISEC_BASE_URL, 'admin/login-logs', { headers: { Authorization: `Bearer ${token}` } }),
 };
 
 export const apiBe = {

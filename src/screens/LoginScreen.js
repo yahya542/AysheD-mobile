@@ -67,7 +67,7 @@ export default function LoginScreen({ onLogin }) {
             <View style={s.shieldIconWrap}>
               <View style={s.imageGridRow}>
                 <Image
-                  source={require("../../assets/images/logo.png")}
+                  source={require("../../assets/images/logo4.png")}
                   style={s.logo}
             
                   
@@ -75,6 +75,10 @@ export default function LoginScreen({ onLogin }) {
                 <Image
                   source={require("../../assets/images/logo2.png")}
                   style={s.logo2}
+                />
+                <Image
+                  source={require("../../assets/images/logo3.png")}
+                  style={s.logo}
                 />
               </View>
             </View>
@@ -195,7 +199,7 @@ const s = StyleSheet.create({
   logoContainer: { alignItems: "center", marginBottom: 32 },
   shieldIconWrap: {
     width: 1080,
-    height: 30,
+    height: 100,
     borderRadius: 40,
     backgroundColor: C.accentYellow,
     borderWidth: 4,
