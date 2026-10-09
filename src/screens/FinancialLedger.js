@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { View, Text, ScrollView, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { C, T, R, S } from '../tokens';
+import { s } from './styles/financialLedgerStyles';
 
 export default function FinancialLedger({ user, onLogout }) {
     const [haptic, setHaptic] = useState(true);
@@ -194,71 +195,3 @@ function BottomNav({ active, onLogout }) {
     );
 }
 
-const s = StyleSheet.create({
-    root: { flex: 1, backgroundColor: C.canvasBg },
-    header: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingHorizontal: 24, paddingVertical: 12, backgroundColor: 'rgba(242,237,228,0.95)', borderBottomWidth: 1, borderBottomColor: C.champagneBorder },
-    logoCircle: { width: 36, height: 36, borderRadius: 18, backgroundColor: C.white, borderWidth: 1, borderColor: C.champagneBorder, alignItems: 'center', justifyContent: 'center' },
-    logoName: { fontSize: 15, fontWeight: '600', color: C.charcoal },
-    logoSub: { fontSize: 10, color: C.charcoalSub, letterSpacing: 1, textTransform: 'uppercase' },
-    aesChip: { flexDirection: 'row', alignItems: 'center', gap: 6, paddingHorizontal: 10, paddingVertical: 5, backgroundColor: C.white, borderRadius: R.full, borderWidth: 1, borderColor: C.champagneBorder },
-    aesText: { fontFamily: 'monospace', fontSize: 11, color: C.charcoalMuted },
-    keyBtn: { width: 36, height: 36, borderRadius: 18, backgroundColor: C.white, borderWidth: 1, borderColor: C.champagneBorder, alignItems: 'center', justifyContent: 'center' },
-    greenDot: { width: 6, height: 6, borderRadius: 3, backgroundColor: '#10B981' },
-    scroll: { padding: 20 },
-    heroCard: { backgroundColor: C.white, borderRadius: R['3xl'], borderWidth: 1, borderColor: C.champagneBorder, padding: 28, marginBottom: 16 },
-    heroCardRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 },
-    heroLabel: { fontSize: 11, fontWeight: '600', color: C.champagneGold, textTransform: 'uppercase', letterSpacing: 1.5 },
-    vaultPill: { paddingHorizontal: 10, paddingVertical: 4, backgroundColor: '#F3EDE0', borderRadius: R.full, borderWidth: 1, borderColor: C.champagneBorder },
-    vaultPillText: { fontFamily: 'monospace', fontSize: 10, color: C.charcoalSub, textTransform: 'uppercase', letterSpacing: 1 },
-    currency: { fontSize: 20, fontWeight: '300', color: C.champagneGold },
-    balance: { fontSize: 40, fontWeight: '600', color: C.charcoal, letterSpacing: -1 },
-    growthText: { fontSize: 13, fontWeight: '500', color: C.emerald },
-    subCards: { flexDirection: 'row', gap: 14, marginTop: 24, marginBottom: 24 },
-    subCard: { flex: 1, padding: 16, backgroundColor: C.champagneLight, borderRadius: R.xl, borderWidth: 1, borderColor: C.champagneBorder },
-    subCardLabel: { fontSize: 11, fontWeight: '500', color: C.charcoalSub },
-    subCardAmount: { fontFamily: 'monospace', fontSize: 15, fontWeight: '600', color: C.charcoal },
-    budgetSection: { paddingTop: 20, borderTopWidth: 1, borderTopColor: C.champagneBorder },
-    budgetRow: { flexDirection: 'row', justifyContent: 'space-between', marginBottom: 16 },
-    budgetTitle: { fontSize: 11, fontWeight: '600', color: C.charcoalMuted, textTransform: 'uppercase', letterSpacing: 1.5 },
-    budgetSub: { fontSize: 10, color: C.charcoalSub },
-    budgetLabelRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6 },
-    budgetItemLabel: { fontSize: 13, fontWeight: '500', color: C.charcoal },
-    budgetItemAmt: { fontFamily: 'monospace', fontSize: 12, color: C.charcoalMuted },
-    budgetItemMax: { fontWeight: '400', color: C.charcoalSub },
-    bar: { height: 8, backgroundColor: '#F3EDE0', borderRadius: R.full, overflow: 'hidden' },
-    barFill: { height: '100%', borderRadius: R.full },
-    alertCard: { backgroundColor: C.white, borderRadius: R['3xl'], borderWidth: 1, borderColor: C.champagneBorder, padding: 24, marginBottom: 16 },
-    alertIcon: { width: 40, height: 40, borderRadius: R.xl, backgroundColor: C.crimsonSubtle, borderWidth: 1, borderColor: '#FECACA', alignItems: 'center', justifyContent: 'center' },
-    alertGoldLabel: { fontSize: 11, fontWeight: '600', color: C.champagneGold, textTransform: 'uppercase', letterSpacing: 1.5 },
-    alertPct: { backgroundColor: C.crimsonSubtle, paddingHorizontal: 10, paddingVertical: 3, borderRadius: R.full, borderWidth: 1, borderColor: '#FECACA' },
-    alertPctText: { fontFamily: 'monospace', fontSize: 10, color: C.crimson, fontWeight: '700' },
-    alertTitle: { fontSize: 15, fontWeight: '600', color: C.charcoal },
-    alertBody: { fontSize: 12, color: C.charcoalMuted, lineHeight: 18, marginBottom: 16 },
-    alertFoot: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingTop: 14, borderTopWidth: 1, borderTopColor: C.champagneBorder },
-    hapticBtn: { flexDirection: 'row', alignItems: 'center', gap: 6, paddingHorizontal: 14, paddingVertical: 6, backgroundColor: C.champagneLight, borderRadius: R.full, borderWidth: 1, borderColor: C.champagneBorder },
-    hapticText: { fontSize: 12, color: C.charcoalMuted, fontWeight: '500' },
-    adjustLink: { fontSize: 12, fontWeight: '600', color: C.charcoal },
-    section: { marginBottom: 16 },
-    sectionHead: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingHorizontal: 4, marginBottom: 12 },
-    sectionTitle: { fontSize: 12, fontWeight: '700', color: C.charcoal, textTransform: 'uppercase', letterSpacing: 1.5 },
-    sectionSub: { fontFamily: 'monospace', fontSize: 10, color: C.champagneGold, letterSpacing: 1.5, textTransform: 'uppercase' },
-    lihatLink: { fontSize: 11, fontWeight: '600', color: C.champagneGold },
-    actionGrid: { flexDirection: 'row', gap: 12 },
-    actionTile: { flex: 1, alignItems: 'center', padding: 14, backgroundColor: C.white, borderRadius: R.xl, borderWidth: 1, borderColor: C.champagneBorder },
-    actionIconWrap: { width: 40, height: 40, borderRadius: R.lg, backgroundColor: C.champagneLight, borderWidth: 1, borderColor: C.champagneBorder, alignItems: 'center', justifyContent: 'center', marginBottom: 6 },
-    actionIconAccent: { backgroundColor: C.champagneGold },
-    actionLabel: { fontSize: 11, fontWeight: '500', color: C.charcoalMuted },
-    actionLabelAccent: { fontWeight: '600', color: C.charcoal },
-    txItem: { flexDirection: 'row', alignItems: 'center', gap: 14, padding: 16, backgroundColor: C.white, borderRadius: R.xl, borderWidth: 1, borderColor: C.champagneBorder },
-    txIcon: { width: 44, height: 44, borderRadius: R.lg, backgroundColor: C.champagneLight, borderWidth: 1, borderColor: C.champagneBorder, alignItems: 'center', justifyContent: 'center' },
-    txTitle: { fontSize: 14, fontWeight: '600', color: C.charcoal },
-    txSub: { fontSize: 11, color: C.charcoalSub, marginTop: 2 },
-    txAmount: { fontFamily: 'monospace', fontSize: 14, fontWeight: '700' },
-    txStatus: { fontFamily: 'monospace', fontSize: 10, fontWeight: '600' },
-    navDock: { position: 'absolute', bottom: 16, left: 20, right: 20 },
-    navInner: { flexDirection: 'row', justifyContent: 'space-around', backgroundColor: C.white, borderRadius: R.xl, borderWidth: 1, borderColor: C.champagneBorder, paddingVertical: 8, paddingHorizontal: 12, shadowColor: '#1C1917', shadowOpacity: 0.06, shadowRadius: 16, elevation: 6 },
-    navItem: { alignItems: 'center', paddingHorizontal: 16, paddingVertical: 6, borderRadius: R.lg },
-    navItemActive: { backgroundColor: C.champagneLight, borderWidth: 1, borderColor: C.champagneBorder },
-    navLabel: { fontSize: 10, fontWeight: '500', color: C.charcoalSub, textTransform: 'uppercase', letterSpacing: 1, marginTop: 2 },
-    navLabelActive: { fontWeight: '700', color: C.charcoal },
-});

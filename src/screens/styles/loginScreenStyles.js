@@ -1,0 +1,41 @@
+import { StyleSheet } from 'react-native';
+
+export const C = {
+    royalBg: '#1e3a8a',
+    primaryDark: '#0f172a',
+    cardBlue: '#172554',
+    cardBlueLight: '#1e40af',
+    accentYellow: '#fbbf24',
+    accentYellowHover: '#f59e0b',
+    borderBlue: '#2563eb',
+    white: '#ffffff',
+    slate500: '#64748b',
+    blue200: '#bfdbfe',
+    blue300: '#93c5fd',
+    red500: '#ef4444',
+    green500: '#10b981',
+};
+
+export const s = StyleSheet.create({
+    root: { flex: 1, backgroundColor: C.royalBg },
+    container: { flex: 1, padding: 24, justifyContent: 'center' },
+    logoContainer: { alignItems: 'center', marginBottom: 32 },
+    shieldIconWrap: { width: 1080, height: 100, borderRadius: 40, backgroundColor: C.accentYellow, borderWidth: 4, borderColor: C.accentYellowHover, alignItems: 'center', justifyContent: 'center' },
+    title: { fontSize: 24, fontWeight: '900', color: C.white, letterSpacing: 1 },
+    authBadge: { flexDirection: 'row', alignItems: 'center', gap: 6, backgroundColor: C.primaryDark, paddingHorizontal: 12, paddingVertical: 6, borderRadius: 16, marginTop: 8, borderWidth: 1, borderColor: C.borderBlue },
+    authDot: { width: 8, height: 8, borderRadius: 4, backgroundColor: C.accentYellow },
+    authBadgeText: { fontSize: 10, fontWeight: '700', fontFamily: 'monospace', color: C.accentYellow, letterSpacing: 2 },
+    card: { backgroundColor: C.cardBlue, borderWidth: 2, borderColor: C.borderBlue, borderRadius: 20, padding: 24, shadowColor: '#000', shadowOpacity: 0.3, shadowRadius: 10, elevation: 6 },
+    errorBox: { flexDirection: 'row', alignItems: 'center', gap: 8, backgroundColor: '#7f1d1d', borderWidth: 1, borderColor: '#ef4444', padding: 12, borderRadius: 8, marginBottom: 16 },
+    errorText: { fontSize: 12, fontWeight: '600', color: '#fca5a5' },
+    inputWrap: { marginBottom: 20 },
+    inputLabel: { fontSize: 10, fontWeight: '700', fontFamily: 'monospace', color: C.accentYellow, marginBottom: 8, letterSpacing: 1 },
+    input: { backgroundColor: C.primaryDark, borderWidth: 2, borderColor: C.cardBlueLight, borderRadius: 12, paddingHorizontal: 16, paddingVertical: 14, fontSize: 14, color: C.white, fontWeight: '600' },
+    loginBtn: { backgroundColor: C.accentYellow, paddingVertical: 16, borderRadius: 12, alignItems: 'center', borderWidth: 2, borderColor: C.accentYellowHover, marginTop: 8 },
+    loginBtnText: { fontSize: 14, fontWeight: '800', fontFamily: 'monospace', color: C.primaryDark, letterSpacing: 1.5 },
+    serverStatus: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 8, marginTop: 24, paddingTop: 16, borderTopWidth: 1, borderTopColor: C.borderBlue },
+    serverStatusText: { fontSize: 11, fontWeight: '600', fontFamily: 'monospace', color: C.blue300 },
+    logo: { width: 100, height: 100, resizeMode: 'contain' },
+    logo2: { width: 150, height: 150, resizeMode: 'contain' },
+    imageGridRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: -10 },
+});

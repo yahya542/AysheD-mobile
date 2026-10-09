@@ -1,9 +1,9 @@
 const APISEC_BASE_URL = __DEV__
-  ? 'http://10.154.197.74:8000/'
+  ?  'http://voting-duta.biz.id:8069/'               //'http://10.154.197.74:8000/'
   : 'https://api.ayshed.biz.id';
 
 const APIBE_BASE_URL = __DEV__
-  ? 'http://10.154.197.74:8002'
+  ? 'http://voting-duta.biz.id:8069/'                                               //'http://10.154.197.74:8002'
   : 'https://be.ayshed.biz.id';
 
 async function request(baseUrl, path, options = {}) {
@@ -41,7 +41,7 @@ export const authApi = {
   register: (payload) => request(APISEC_BASE_URL, 'auth/register', { method: 'POST', body: JSON.stringify(payload) }),
   me: (token) => request(APISEC_BASE_URL, 'auth/me', { headers: { Authorization: `Bearer ${token}` } }),
   logout: (token) => request(APISEC_BASE_URL, 'auth/logout', { method: 'POST', headers: { Authorization: `Bearer ${token}` } }),
-  loginLogs: (token) => request(APISEC_BASE_URL, 'admin/login-logs', { headers: { Authorization: `Bearer ${token}` } }),
+  loginLogs: (token) => request(APISEC_BASE_URL, 'admin/logs', { headers: { Authorization: `Bearer ${token}` } }),
 };
 
 export const apiBe = {
