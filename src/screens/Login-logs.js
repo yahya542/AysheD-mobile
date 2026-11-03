@@ -51,7 +51,13 @@ export default function LoginLogs({ user, onLogout }) {
         try {
             const result = await auth.getLoginLogs();
             const rawLogs = extractLogs(result);
-            setLogs(rawLogs.map(normalizeLog));
+
+            let processedLogs = rawLogs.map(normalizeLog);
+            processedLogs.sort((a, b) => Number(b.id) - Number(a.id));
+
+            const top20Logs = processedLogs.slice(0, 20);
+
+            setLogs(top20Logs);
         } catch (err) {
             console.error('Gagal memuat log login:', err);
             setLogs([]);

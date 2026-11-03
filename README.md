@@ -54,3 +54,13 @@ Join our community of developers creating universal apps.
 
 - [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
 - [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+
+## Catatan Perubahan (Changelog)
+
+### [2026-11-03]
+- **Upgrade SDK**: Upgrade Expo SDK 57 ke SDK 58 (`expo@~58.0.22`, `react@19.3.0`, `react-native@0.88.1`, serta update seluruh paket pendukung ke versi kompatibel SDK 58).
+- **Perbaikan Font Bundling**: Memulihkan aset font `MaterialSymbols_400Regular.ttf` yang tidak lengkap agar bundling Android tidak gagal.
+- **Log Login**: Menambahkan sorting berdasarkan ID terbaru dan pembatasan 20 log teratas pada tampilan `src/screens/Login-logs.js`.
+- **Layanan API**: Perbaikan import axios, dukungan konfigurasi IP/Port dari environment variabel Expo, penyesuaian baseUrl, serta pembersihan trailing/leading slash pada path request.
+- **UI / Styling**: Penyesuaian padding vertikal pada header dashboard Super Admin.
+- **Dokumentasi & Config**: Sinkronisasi referensi versi SDK di `AGENTS.md` ke v58.0.0 dan penambahan ignore `penting.md` di `.gitignore`.

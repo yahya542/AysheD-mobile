@@ -1,13 +1,27 @@
-const APISEC_BASE_URL = __DEV__
-  ?  'http://voting-duta.biz.id:8069/'               //'http://10.154.197.74:8000/'
-  : 'https://api.ayshed.biz.id';
+// 1. Perbaikan Import Axios (Gunakan huruf kecil 'axios')
+import axios from 'axios'; 
 
-const APIBE_BASE_URL = __DEV__
-  ? 'http://voting-duta.biz.id:8069/'                                               //'http://10.154.197.74:8002'
-  : 'https://be.ayshed.biz.id';
+// 2. Ambil variabel dari .env (Wajib EXPO_PUBLIC_ jika menggunakan Expo)
+// Jika Anda pakai React Native CLI biasa, ganti menjadi: process.env.ip atau import dari '@env'
+const ip = process.env.EXPO_PUBLIC_ip || process.env.ip; 
+const port = process.env.EXPO_PUBLIC_port || process.env.port;
+
+// 3. Perbaikan APISEC_BASE_URL (Wajib menggunakan BACKTICK ` bukan SINGLE QUOTE ')
+const APISEC_BASE_URL = __DEV__
+  ? `http://${ip}:${port}/` 
+  : 'https://voting-duta.biz.id'; // URL untuk Production jika tidak sedang __DEV__
+
+// 4. Tambahkan definisi APIBE_BASE_URL yang kurang agar tidak error saat di-export
+const APIBE_BASE_URL = APISEC_BASE_URL; 
+
+
+// --- SISA KODE REQUEST & API ANDA TETAP SAMA ---
 
 async function request(baseUrl, path, options = {}) {
-  const url = `${baseUrl}${path}`;
+  // Jika path diawali dengan '/', hapus '/' agar tidak double saat digabung dengan baseUrl yang sudah punya '/'
+  const cleanPath = path.startsWith('/') ? path.slice(1) : path;
+  const url = `${baseUrl}${cleanPath}`;
+  
   const response = await fetch(url, {
     headers: {
       'Content-Type': 'application/json',

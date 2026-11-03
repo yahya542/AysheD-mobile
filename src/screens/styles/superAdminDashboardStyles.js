@@ -25,7 +25,7 @@ export const C = {
 
 export const s = StyleSheet.create({
     root: { flex: 1, backgroundColor: C.royalBg },
-    header: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', backgroundColor: '#0f1d4a', borderBottomWidth: 1, borderBottomColor: C.borderBlue, paddingHorizontal: 20, paddingVertical: 14 },
+    header: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', backgroundColor: '#0f1d4a', borderBottomWidth: 1, borderBottomColor: C.borderBlue, paddingHorizontal: 20, paddingVertical: 38 },
     headerAvatar: { width: 36, height: 36, borderRadius: 18, backgroundColor: C.accentYellow, borderWidth: 2, borderColor: C.accentYellowHover, alignItems: 'center', justifyContent: 'center' },
     headerTitle: { fontSize: 16, fontWeight: '700', color: C.white },
     headerSubtitle: { fontSize: 11, fontWeight: '700', fontFamily: 'monospace', color: C.accentYellow, letterSpacing: 1 },
