@@ -61,13 +61,13 @@ export default function AdminDashboard({ user, onLogout }) {
     };
 
     const renderHeader = () => (
-        <View style={{ padding: 16, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', borderBottomWidth: 1, borderBottomColor: '#1e293b' }}>
+        <View style={{ padding: 16, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', borderBottomWidth: 1, borderBottomColor: '#bfdbfe' }}>
             <View>
-                <Text style={{ fontSize: 16, fontWeight: '700', color: '#fff' }}>Admin Dashboard</Text>
-                <Text style={{ fontSize: 12, color: '#94a3b8', marginTop: 2 }}>{email}</Text>
+                <Text style={{ fontSize: 16, fontWeight: '700', color: '#1e3a8a' }}>Admin Dashboard</Text>
+                <Text style={{ fontSize: 12, color: '#64748b', marginTop: 2 }}>{email}</Text>
             </View>
-            <TouchableOpacity style={{ backgroundColor: '#334155', paddingHorizontal: 12, paddingVertical: 8, borderRadius: 6 }} onPress={onLogout}>
-                <Text style={{ color: '#e2e8f0', fontSize: 12, fontWeight: '700' }}>KELUAR</Text>
+            <TouchableOpacity style={{ backgroundColor: '#dbeafe', paddingHorizontal: 12, paddingVertical: 8, borderRadius: 6 }} onPress={onLogout}>
+                <Text style={{ color: '#1e3a8a', fontSize: 12, fontWeight: '700' }}>KELUAR</Text>
             </TouchableOpacity>
         </View>
     );
@@ -85,27 +85,27 @@ export default function AdminDashboard({ user, onLogout }) {
         <View style={{ padding: 16 }}>
             <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 12 }}>
                 <TouchableOpacity
-                    style={{ flex: 1, minWidth: '45%', backgroundColor: '#1e293b', borderRadius: 12, padding: 20, alignItems: 'center', gap: 8, borderWidth: 1, borderColor: '#334155' }}
+                    style={{ flex: 1, minWidth: '45%', backgroundColor: '#ffffff', borderRadius: 12, padding: 20, alignItems: 'center', gap: 8, borderWidth: 1, borderColor: '#bfdbfe' }}
                     onPress={openSuspendModal}
                 >
                     <Text style={{ fontSize: 28 }}>🚫</Text>
-                    <Text style={{ color: '#e2e8f0', fontSize: 13, fontWeight: '700' }}>Suspend</Text>
+                    <Text style={{ color: '#1e3a8a', fontSize: 13, fontWeight: '700' }}>Suspend</Text>
                 </TouchableOpacity>
 
                 <TouchableOpacity
-                    style={{ flex: 1, minWidth: '45%', backgroundColor: '#1e293b', borderRadius: 12, padding: 20, alignItems: 'center', gap: 8, borderWidth: 1, borderColor: '#334155' }}
+                    style={{ flex: 1, minWidth: '45%', backgroundColor: '#ffffff', borderRadius: 12, padding: 20, alignItems: 'center', gap: 8, borderWidth: 1, borderColor: '#bfdbfe' }}
                     onPress={() => { setView('listUser'); loadListUsers(); }}
                 >
                     <Text style={{ fontSize: 28 }}>👥</Text>
-                    <Text style={{ color: '#e2e8f0', fontSize: 13, fontWeight: '700' }}>List User</Text>
+                    <Text style={{ color: '#1e3a8a', fontSize: 13, fontWeight: '700' }}>List User</Text>
                 </TouchableOpacity>
 
                 <TouchableOpacity
-                    style={{ flex: 1, minWidth: '45%', backgroundColor: '#1e293b', borderRadius: 12, padding: 20, alignItems: 'center', gap: 8, borderWidth: 1, borderColor: '#334155' }}
+                    style={{ flex: 1, minWidth: '45%', backgroundColor: '#ffffff', borderRadius: 12, padding: 20, alignItems: 'center', gap: 8, borderWidth: 1, borderColor: '#bfdbfe' }}
                     onPress={() => setView('listContainer')}
                 >
                     <Text style={{ fontSize: 28 }}>📦</Text>
-                    <Text style={{ color: '#e2e8f0', fontSize: 13, fontWeight: '700' }}>List Container</Text>
+                    <Text style={{ color: '#1e3a8a', fontSize: 13, fontWeight: '700' }}>List Container</Text>
                 </TouchableOpacity>
             </View>
         </View>
@@ -118,12 +118,12 @@ export default function AdminDashboard({ user, onLogout }) {
                 {listUsersLoading ? (
                     <ActivityIndicator color="#facc15" />
                 ) : listUsers.length === 0 ? (
-                    <Text style={{ color: '#94a3b8', textAlign: 'center', marginTop: 24 }}>Tidak ada user</Text>
+                    <Text style={{ color: '#64748b', textAlign: 'center', marginTop: 24 }}>Tidak ada user</Text>
                 ) : (
                     listUsers.map((u) => (
-                        <View key={u.id} style={{ backgroundColor: '#1e293b', borderRadius: 10, padding: 14, borderWidth: 1, borderColor: '#334155' }}>
-                            <Text style={{ color: '#e2e8f0', fontWeight: '600', fontSize: 13 }}>{u.email}</Text>
-                            <Text style={{ color: '#94a3b8', fontSize: 11, marginTop: 2 }}>Role: {u.role} | Status: {u.is_active ? 'Aktif' : 'Suspended'}</Text>
+                        <View key={u.id} style={{ backgroundColor: '#ffffff', borderRadius: 10, padding: 14, borderWidth: 1, borderColor: '#bfdbfe' }}>
+                            <Text style={{ color: '#1e3a8a', fontWeight: '600', fontSize: 13 }}>{u.email}</Text>
+                            <Text style={{ color: '#64748b', fontSize: 11, marginTop: 2 }}>Role: {u.role} | Status: {u.is_active ? 'Aktif' : 'Suspended'}</Text>
                         </View>
                     ))
                 )}
@@ -135,7 +135,7 @@ export default function AdminDashboard({ user, onLogout }) {
         <View style={{ flex: 1 }}>
             {renderBackButton()}
             <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', padding: 24 }}>
-                <Text style={{ fontSize: 14, color: '#94a3b8', textAlign: 'center' }}>
+                <Text style={{ fontSize: 14, color: '#64748b', textAlign: 'center' }}>
                     Fitur List Container sedang dalam pengembangan.
                 </Text>
             </View>
@@ -143,7 +143,7 @@ export default function AdminDashboard({ user, onLogout }) {
     );
 
     return (
-        <SafeAreaView style={{ flex: 1, backgroundColor: '#0f172a' }}>
+        <SafeAreaView style={{ flex: 1, backgroundColor: '#eff6ff' }}>
             {renderHeader()}
             {view === 'dashboard' && (
                 <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
@@ -160,9 +160,9 @@ export default function AdminDashboard({ user, onLogout }) {
                 animationType="slide"
                 onRequestClose={() => setSuspendModalVisible(false)}
             >
-                <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'rgba(0,0,0,0.5)' }}>
-                    <View style={{ width: '90%', backgroundColor: '#1e293b', borderRadius: 12, padding: 20, maxHeight: '70%' }}>
-                        <Text style={{ fontSize: 16, fontWeight: '700', color: '#fff', marginBottom: 12 }}>Suspend Akun</Text>
+                <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'rgba(30,58,138,0.3)' }}>
+                    <View style={{ width: '90%', backgroundColor: '#ffffff', borderRadius: 12, padding: 20, maxHeight: '70%' }}>
+                        <Text style={{ fontSize: 16, fontWeight: '700', color: '#1e3a8a', marginBottom: 12 }}>Suspend Akun</Text>
 
                         {suspendLoading && <ActivityIndicator color="#facc15" style={{ marginBottom: 12 }} />}
 
@@ -180,14 +180,14 @@ export default function AdminDashboard({ user, onLogout }) {
                                         padding: 12,
                                         borderRadius: 8,
                                         marginBottom: 6,
-                                        backgroundColor: selectedUserId === u.id ? '#facc15' : '#334155',
+                                        backgroundColor: selectedUserId === u.id ? '#facc15' : '#dbeafe',
                                     }}
                                     onPress={() => setSelectedUserId(u.id)}
                                 >
-                                    <Text style={{ color: selectedUserId === u.id ? '#0f172a' : '#e2e8f0', fontWeight: '600', fontSize: 13 }}>
+                                    <Text style={{ color: selectedUserId === u.id ? '#1e3a8a' : '#1e3a8a', fontWeight: '600', fontSize: 13 }}>
                                         {u.email}
                                     </Text>
-                                    <Text style={{ color: selectedUserId === u.id ? '#0f172a' : '#94a3b8', fontSize: 11, marginTop: 2 }}>
+                                    <Text style={{ color: selectedUserId === u.id ? '#1e3a8a' : '#64748b', fontSize: 11, marginTop: 2 }}>
                                         Role: {u.role} | Status: {u.is_active ? 'Aktif' : 'Suspended'}
                                     </Text>
                                 </TouchableOpacity>
@@ -196,17 +196,17 @@ export default function AdminDashboard({ user, onLogout }) {
 
                         <View style={{ flexDirection: 'row', gap: 10 }}>
                             <TouchableOpacity
-                                style={{ flex: 1, padding: 12, borderRadius: 8, backgroundColor: '#334155', alignItems: 'center' }}
+                                style={{ flex: 1, padding: 12, borderRadius: 8, backgroundColor: '#dbeafe', alignItems: 'center' }}
                                 onPress={() => setSuspendModalVisible(false)}
                             >
-                                <Text style={{ color: '#e2e8f0', fontWeight: '600' }}>Batal</Text>
+                                <Text style={{ color: '#1e3a8a', fontWeight: '600' }}>Batal</Text>
                             </TouchableOpacity>
                             <TouchableOpacity
                                 style={{ flex: 1, padding: 12, borderRadius: 8, backgroundColor: '#ef4444', alignItems: 'center', opacity: suspendLoading ? 0.5 : 1 }}
                                 onPress={handleSuspend}
                                 disabled={suspendLoading}
                             >
-                                <Text style={{ color: '#fff', fontWeight: '700' }}>Suspend</Text>
+                                <Text style={{ color: '#1e3a8a', fontWeight: '700' }}>Suspend</Text>
                             </TouchableOpacity>
                         </View>
                     </View>
