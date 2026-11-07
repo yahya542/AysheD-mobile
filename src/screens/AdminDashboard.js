@@ -61,13 +61,13 @@ export default function AdminDashboard({ user, onLogout }) {
     };
 
     const renderHeader = () => (
-        <View style={{ padding: 16, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', borderBottomWidth: 1, borderBottomColor: '#bfdbfe' }}>
+        <View style={{ padding: 16, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', borderBottomWidth: 1, borderBottomColor: '#2563eb' }}>
             <View>
-                <Text style={{ fontSize: 16, fontWeight: '700', color: '#1e3a8a' }}>Admin Dashboard</Text>
-                <Text style={{ fontSize: 12, color: '#64748b', marginTop: 2 }}>{email}</Text>
+                <Text style={{ fontSize: 16, fontWeight: '700', color: '#ffffff' }}>Admin Dashboard</Text>
+                <Text style={{ fontSize: 12, color: '#bfdbfe', marginTop: 2 }}>{email}</Text>
             </View>
             <TouchableOpacity style={{ backgroundColor: '#dbeafe', paddingHorizontal: 12, paddingVertical: 8, borderRadius: 6 }} onPress={onLogout}>
-                <Text style={{ color: '#1e3a8a', fontSize: 12, fontWeight: '700' }}>KELUAR</Text>
+                <Text style={{ color: '#facc15', fontSize: 12, fontWeight: '700' }}>KELUAR</Text>
             </TouchableOpacity>
         </View>
     );
@@ -118,12 +118,12 @@ export default function AdminDashboard({ user, onLogout }) {
                 {listUsersLoading ? (
                     <ActivityIndicator color="#facc15" />
                 ) : listUsers.length === 0 ? (
-                    <Text style={{ color: '#64748b', textAlign: 'center', marginTop: 24 }}>Tidak ada user</Text>
+                    <Text style={{ color: '#bfdbfe', textAlign: 'center', marginTop: 24 }}>Tidak ada user</Text>
                 ) : (
                     listUsers.map((u) => (
                         <View key={u.id} style={{ backgroundColor: '#ffffff', borderRadius: 10, padding: 14, borderWidth: 1, borderColor: '#bfdbfe' }}>
                             <Text style={{ color: '#1e3a8a', fontWeight: '600', fontSize: 13 }}>{u.email}</Text>
-                            <Text style={{ color: '#64748b', fontSize: 11, marginTop: 2 }}>Role: {u.role} | Status: {u.is_active ? 'Aktif' : 'Suspended'}</Text>
+                            <Text style={{ color: '#bfdbfe', fontSize: 11, marginTop: 2 }}>Role: {u.role} | Status: {u.is_active ? 'Aktif' : 'Suspended'}</Text>
                         </View>
                     ))
                 )}
@@ -135,7 +135,7 @@ export default function AdminDashboard({ user, onLogout }) {
         <View style={{ flex: 1 }}>
             {renderBackButton()}
             <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', padding: 24 }}>
-                <Text style={{ fontSize: 14, color: '#64748b', textAlign: 'center' }}>
+                <Text style={{ fontSize: 14, color: '#bfdbfe', textAlign: 'center' }}>
                     Fitur List Container sedang dalam pengembangan.
                 </Text>
             </View>
@@ -143,7 +143,7 @@ export default function AdminDashboard({ user, onLogout }) {
     );
 
     return (
-        <SafeAreaView style={{ flex: 1, backgroundColor: '#eff6ff' }}>
+        <SafeAreaView style={{ flex: 1, backgroundColor: '#1e3a8a' }}>
             {renderHeader()}
             {view === 'dashboard' && (
                 <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
@@ -160,7 +160,7 @@ export default function AdminDashboard({ user, onLogout }) {
                 animationType="slide"
                 onRequestClose={() => setSuspendModalVisible(false)}
             >
-                <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'rgba(30,58,138,0.3)' }}>
+                <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'rgba(0,0,0,0.4)' }}>
                     <View style={{ width: '90%', backgroundColor: '#ffffff', borderRadius: 12, padding: 20, maxHeight: '70%' }}>
                         <Text style={{ fontSize: 16, fontWeight: '700', color: '#1e3a8a', marginBottom: 12 }}>Suspend Akun</Text>
 
