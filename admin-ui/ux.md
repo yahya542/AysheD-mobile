@@ -6,6 +6,22 @@ Menyusun tampilan dan fungsionalitas halaman admin (AdminDashboard) yang **reali
 
 ---
 
+## Status Realisasi (diperbarui 2026-11-07)
+
+| # | Tugas | Status |
+|---|-------|--------|
+| 1 | Fix login (sambung API) — LoginScreen.js memanggil `auth.login()` dan `authApi.me()` | ✅ Selesai (commit 7f1f35b) |
+| 2 | Perbaikan routing role — `index.tsx` cek `role === 'admin'` | ✅ Selesai (commit 7f1f35b) |
+| 3 | Rename SuperAdminDashboard → AdminDashboard | ✅ Selesai (commit da2fe87) |
+| 4 | Layar 1: daftar log + filter + search (sambung ke `/admin/logs`) | ⏳ Belum |
+| 5 | Layar 1: tombol suspend + copy IP | ⏳ Belum |
+| 6 | Layar 2: insiden aktif dari log mentah terbaru | ⏳ Belum |
+| 7 | Layar 2: kartu metrik (dummy berlabel atau live) | ⏳ Belum |
+| 8 | Backend: buat endpoint `/admin/stats/summary` | ⏳ Belum |
+| 9 | Layar 2: kartu metrik live | ⏳ Belum (menunggu #8) |
+
+---
+
 ## Prinsip Pedoman (dari review mentor)
 
 1. **Jangan klaim kapabilitas yang tidak nyata** — istilah enterprise (failover, cluster, anomaly scoring) dihapus.
@@ -116,15 +132,15 @@ Response:
 
 ## Urutan Eksekusi
 
-| Prioritas | Tugas | Ketergantungan |
-|-----------|-------|----------------|
-| 1 | Fix login (sambung API) | Selesai ✅ |
-| 2 | Layar 1: daftar log + filter + search | Tidak ada |
-| 3 | Layar 1: tombol suspend + copy IP | Endpoint `/admin/suspend-user` (sudah ada) |
-| 4 | Layar 2: insiden aktif dari log mentah terbaru | Endpoint `/admin/logs` (sudah ada) |
-| 5 | Layar 2: kartu metrik (dummy berlabel atau live) | Endpoint `/admin/stats/summary` (perlu dibuat) |
-| 6 | Backend: buat `/admin/stats/summary` | Tidak ada |
-| 7 | Layar 2: kartu metrik live | Langkah 6 selesai |
+| Prioritas | Tugas | Ketergantungan | Status |
+|-----------|-------|----------------|--------|
+| 1 | Fix login (sambung API) | Selesai | ✅ Selesai (commit 7f1f35b) |
+| 2 | Layar 1: daftar log + filter + search | Tidak ada | ⏳ Belum |
+| 3 | Layar 1: tombol suspend + copy IP | Endpoint `/admin/suspend-user` (sudah ada) | ⏳ Belum |
+| 4 | Layar 2: insiden aktif dari log mentah terbaru | Endpoint `/admin/logs` (sudah ada) | ⏳ Belum |
+| 5 | Layar 2: kartu metrik (dummy berlabel atau live) | Endpoint `/admin/stats/summary` (perlu dibuat) | ⏳ Belum |
+| 6 | Backend: buat `/admin/stats/summary` | Tidak ada | ⏳ Belum |
+| 7 | Layar 2: kartu metrik live | Langkah 6 selesai | ⏳ Belum |
 
 ---
 
