@@ -31,8 +31,8 @@ export default function App() {
   }
 
   // 2. PROTEKSI DENGAN TANDA TANYA (?.)
-  // Jika user ada tetapi tidak punya role, dia tidak akan membuat aplikasi jadi merah/crash
-  if (user?.role === 'superadmin') {
+  // Backend mengembalikan role "admin" untuk superadmin, "user" untuk user biasa
+  if (user?.role === 'admin' || user?.role === 'superadmin') {
     return (
       <SafeAreaProvider>
         <SuperAdminDashboard user={user} onLogout={handleLogout} />

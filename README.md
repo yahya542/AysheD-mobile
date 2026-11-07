@@ -57,6 +57,13 @@ Join our community of developers creating universal apps.
 
 ## Catatan Perubahan (Changelog)
 
+### [2026-11-07]
+- **Perbaikan Login**: Mengganti mock login (setTimeout) dengan panggilan API nyata ke backend melalui `auth.login()` dan `authApi.me()`. Menambahkan penanganan error untuk kredensial salah.
+- **Perbaikan Routing Role**: Mengubah pengecekan role di `index.tsx` dari `'superadmin'` menjadi `'admin'` (sesuai dengan `UserRole.admin` dari backend) agar akun admin diarahkan ke `SuperAdminDashboard`.
+- **Rencana Kerja Admin UI/UX**: Membuat dokumen `admin-ui/ux.md` berisi rencana tampilan dan fungsionalitas halaman admin dengan prioritas eksekusi yang realistis, menggunakan data nyata dari endpoint backend yang sudah ada.
+
+## Catatan Perubahan (Changelog)
+
 ### [2026-11-03]
 - **Upgrade SDK**: Upgrade Expo SDK 57 ke SDK 58 (`expo@~58.0.22`, `react@19.3.0`, `react-native@0.88.1`, serta update seluruh paket pendukung ke versi kompatibel SDK 58).
 - **Perbaikan Font Bundling**: Memulihkan aset font `MaterialSymbols_400Regular.ttf` yang tidak lengkap agar bundling Android tidak gagal.
