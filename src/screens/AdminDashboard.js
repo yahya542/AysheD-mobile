@@ -82,8 +82,9 @@ export default function AdminDashboard({ user, onLogout }) {
     );
 
     const renderGrid = () => (
-        <View style={{ padding: 16 }}>
-            <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 12 }}>
+        <View style={{ padding: 16, alignItems: 'center' }}>
+            <View style={{ width: 280, height: 280, borderRadius: 25, backgroundColor: '#ffffff', padding: 16, justifyContent: 'center', borderWidth: 1, borderColor: '#bfdbfe' }}>
+            <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 12, justifyContent: 'center' }}>
                 <TouchableOpacity
                     style={{ flex: 1, minWidth: '45%', backgroundColor: '#facc15', borderRadius: 12, padding: 20, alignItems: 'center', gap: 8, borderWidth: 1, borderColor: '#eab308' }}
                     onPress={openSuspendModal}
@@ -107,6 +108,7 @@ export default function AdminDashboard({ user, onLogout }) {
                     <Text style={{ fontSize: 28 }}>📦</Text>
                     <Text style={{ color: '#1e3a8a', fontSize: 13, fontWeight: '700' }}>List Container</Text>
                 </TouchableOpacity>
+            </View>
             </View>
         </View>
     );
