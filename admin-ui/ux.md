@@ -2,7 +2,7 @@
 
 ## Tujuan
 
-Menyusun tampilan dan fungsionalitas halaman admin (SuperAdminDashboard) yang **realistis dan terhubung ke backend nyata**, tanpa mengklaim fitur yang belum diimplementasikan.
+Menyusun tampilan dan fungsionalitas halaman admin (AdminDashboard) yang **realistis dan terhubung ke backend nyata**, tanpa mengklaim fitur yang belum diimplementasikan.
 
 ---
 

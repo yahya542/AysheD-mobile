@@ -3,7 +3,7 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 import LoginScreen from '../screens/LoginScreen';
 import FinancialLedger from '../screens/FinancialLedger';
-import SuperAdminDashboard from '../screens/SuperAdminDashboard';
+import AdminDashboard from '../screens/AdminDashboard';
 
 export default function App() {
   const [user, setUser] = useState(null);
@@ -35,7 +35,7 @@ export default function App() {
   if (user?.role === 'admin' || user?.role === 'superadmin') {
     return (
       <SafeAreaProvider>
-        <SuperAdminDashboard user={user} onLogout={handleLogout} />
+        <AdminDashboard user={user} onLogout={handleLogout} />
       </SafeAreaProvider>
     );
   }

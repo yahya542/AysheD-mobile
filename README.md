@@ -59,7 +59,7 @@ Join our community of developers creating universal apps.
 
 ### [2026-11-07]
 - **Perbaikan Login**: Mengganti mock login (setTimeout) dengan panggilan API nyata ke backend melalui `auth.login()` dan `authApi.me()`. Menambahkan penanganan error untuk kredensial salah.
-- **Perbaikan Routing Role**: Mengubah pengecekan role di `index.tsx` dari `'superadmin'` menjadi `'admin'` (sesuai dengan `UserRole.admin` dari backend) agar akun admin diarahkan ke `SuperAdminDashboard`.
+- **Perbaikan Routing Role**: Mengubah pengecekan role di `index.tsx` dari `'superadmin'` menjadi `'admin'` (sesuai dengan `UserRole.admin` dari backend) agar akun admin diarahkan ke `AdminDashboard`.
 - **Rencana Kerja Admin UI/UX**: Membuat dokumen `admin-ui/ux.md` berisi rencana tampilan dan fungsionalitas halaman admin dengan prioritas eksekusi yang realistis, menggunakan data nyata dari endpoint backend yang sudah ada.
 
 ## Catatan Perubahan (Changelog)

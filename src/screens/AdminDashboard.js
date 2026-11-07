@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, ScrollView, TouchableOpacity, TextInput, Switch, SafeAreaView } from 'react-native';
-import { C, s } from './styles/superAdminDashboardStyles';
+import { C, s } from './styles/adminDashboardStyles';
 
 export default function SuperAdminDashboard({ user, onLogout }) {
     const [activeTab, setActiveTab] = useState('threat'); // 'threat' or 'logs'

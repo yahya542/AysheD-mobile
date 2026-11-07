@@ -7,7 +7,7 @@ import UnifiedAuthGateway from './src/screens/UnifiedAuthGateway';
 import FinancialLedger from './src/screens/FinancialLedger';
 import ThreatMonitor from './src/screens/ThreatMonitor';
 import DevSecOpsNodes from './src/screens/DevSecOpsNodes';
-import SuperAdminDashboard from './src/screens/SuperAdminDashboard';
+import AdminDashboard from './src/screens/AdminDashboard';
 import UserDashboard from './src/screens/UserDashboard';
 
 export default function App() {
@@ -56,7 +56,7 @@ export default function App() {
 
     // PENTING: Menampung kecocokan role 'admin' ATAU 'superadmin' agar tidak salah lempar dashboard
     if (user.role === 'admin' || user.role === 'superadmin') {
-      return <SuperAdminDashboard user={user} onLogout={handleLogout} />;
+      return <AdminDashboard user={user} onLogout={handleLogout} />;
     }
 
     return <UserDashboard user={user} onLogout={handleLogout} />;
