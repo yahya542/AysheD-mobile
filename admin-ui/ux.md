@@ -14,7 +14,7 @@ Menyusun tampilan dan fungsionalitas halaman admin (AdminDashboard) yang **reali
 | 2 | Perbaikan routing role — `index.tsx` cek `role === 'admin'` | ✅ Selesai (commit 7f1f35b) |
 | 3 | Rename SuperAdminDashboard → AdminDashboard | ✅ Selesai (commit da2fe87) |
 | 4 | Layar 1: daftar log + filter + search (sambung ke `/admin/logs`) | ⏳ Belum |
-| 5 | Layar 1: tombol suspend + copy IP | ⏳ Belum |
+| 5 | Layar 1: tombol suspend + copy IP | ✅ Selesai (commit 003bc40) |
 | 6 | Layar 2: insiden aktif dari log mentah terbaru | ⏳ Belum |
 | 7 | Layar 2: kartu metrik (dummy berlabel atau live) | ⏳ Belum |
 | 8 | Backend: buat endpoint `/admin/stats/summary` | ⏳ Belum |
