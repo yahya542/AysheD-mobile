@@ -1,6 +1,3 @@
-// 1. Perbaikan Import Axios (Gunakan huruf kecil 'axios')
-import axios from 'axios'; 
-
 // 2. Ambil variabel dari .env (Wajib EXPO_PUBLIC_ jika menggunakan Expo)
 // Jika Anda pakai React Native CLI biasa, ganti menjadi: process.env.ip atau import dari '@env'
 const ip = process.env.EXPO_PUBLIC_ip || process.env.ip; 
@@ -56,6 +53,12 @@ export const authApi = {
   me: (token) => request(APISEC_BASE_URL, 'auth/me', { headers: { Authorization: `Bearer ${token}` } }),
   logout: (token) => request(APISEC_BASE_URL, 'auth/logout', { method: 'POST', headers: { Authorization: `Bearer ${token}` } }),
   loginLogs: (token) => request(APISEC_BASE_URL, 'admin/logs', { headers: { Authorization: `Bearer ${token}` } }),
+  users: (token) => request(APISEC_BASE_URL, 'auth/users', { headers: { Authorization: `Bearer ${token}` } }),
+  suspendUser: (token, userId) => request(APISEC_BASE_URL, 'admin/suspend-user', {
+    method: 'POST',
+    headers: { Authorization: `Bearer ${token}` },
+    body: JSON.stringify({ user_id: userId }),
+  }),
 };
 
 export const apiBe = {

@@ -91,6 +91,22 @@ async function restoreSession() {
   }
 }
 
+async function getUsers() {
+  const token = await getToken();
+  if (!token) {
+    throw new Error('No token found');
+  }
+  return authApi.users(token);
+}
+
+async function suspendUser(userId) {
+  const token = await getToken();
+  if (!token) {
+    throw new Error('No token found');
+  }
+  return authApi.suspendUser(token, userId);
+}
+
 async function getLoginLogs() {
   const token = await getToken();
   if (!token) {
@@ -114,4 +130,6 @@ export const auth = {
   logout,
   restoreSession,
   getLoginLogs,
+  getUsers,
+  suspendUser,
 };
