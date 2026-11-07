@@ -31,11 +31,24 @@ export default function LoginScreen({ onLogin }) {
       const user = await auth.login({ email, password });
       onLogin(user);
     } catch (err) {
+      // Debug: log error untuk diagnosis
+      console.log('[LOGIN ERROR]', err.name, err.message);
+
       // Jika error jaringan / server tidak terhubung
-      if (!err.message || err.message === 'Network request failed' || err.message.includes('fetch')) {
+      // TypeError = fetch gagal (network error)
+      // Jika pesan mengandung 'Network', 'fetch', atau 'Failed to fetch'
+      const isNetworkError = err.name === 'TypeError' ||
+        (err.message && (
+          err.message.toLowerCase().includes('network') ||
+          err.message.toLowerCase().includes('fetch') ||
+          err.message.toLowerCase().includes('failed to fetch') ||
+          err.message.toLowerCase().includes('connection')
+        ));
+
+      if (isNetworkError) {
         setError("Terjadi kesalahan pada sistem");
       } else {
-        // Jika kredensial tidak valid (401 dari backend)
+        // Jika kredensial tidak valid (401 dari backend) atau error lain
         setError("Maaf Username dan password salah");
       }
     } finally {

@@ -1,7 +1,11 @@
 // 2. Ambil variabel dari .env (Wajib EXPO_PUBLIC_ jika menggunakan Expo)
 // Jika Anda pakai React Native CLI biasa, ganti menjadi: process.env.ip atau import dari '@env'
-const ip = process.env.EXPO_PUBLIC_ip || process.env.ip; 
+const ip = process.env.EXPO_PUBLIC_ip || process.env.ip;
 const port = process.env.EXPO_PUBLIC_port || process.env.port;
+
+if (!ip || !port) {
+  console.error('[API] IP atau port tidak terdefinisi. Periksa file .env');
+}
 
 // 3. Perbaikan APISEC_BASE_URL (Wajib menggunakan BACKTICK ` bukan SINGLE QUOTE ')
 const APISEC_BASE_URL = __DEV__
