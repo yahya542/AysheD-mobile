@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, ScrollView, TouchableOpacity, TextInput, Switch, SafeAreaView, Modal, ActivityIndicator } from 'react-native';
 import { C, s } from './styles/adminDashboardStyles';
 import * as Clipboard from 'expo-clipboard';
-import { getUsers, suspendUser } from '../services/auth';
+import { auth } from '../services/auth';
 
 export default function SuperAdminDashboard({ user, onLogout }) {
     const [activeTab, setActiveTab] = useState('threat'); // 'threat' or 'logs'
@@ -32,7 +32,7 @@ export default function SuperAdminDashboard({ user, onLogout }) {
     setSelectedUserId(null);
     setSuspendModalVisible(true);
     try {
-      const users = await getUsers();
+      const users = await auth.getUsers();
       setUsersList(users || []);
     } catch (err) {
       setSuspendMessage('Gagal memuat daftar user: ' + (err.message || 'Unknown error'));
@@ -47,7 +47,7 @@ export default function SuperAdminDashboard({ user, onLogout }) {
     setSuspendLoading(true);
     setSuspendMessage('');
     try {
-      const result = await suspendUser(selectedUserId);
+      const result = await auth.suspendUser(selectedUserId);
       setSuspendMessage(result?.message || 'User berhasil di-suspend');
     } catch (err) {
       setSuspendMessage('Gagal suspend: ' + (err.message || 'Unknown error'));

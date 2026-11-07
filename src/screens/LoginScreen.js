@@ -11,7 +11,7 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { C, s } from './styles/loginScreenStyles';
-import { login as performLogin } from '../services/auth';
+import { auth } from '../services/auth';
 
 export default function LoginScreen({ onLogin }) {
   const [email, setEmail] = useState("");
@@ -28,10 +28,16 @@ export default function LoginScreen({ onLogin }) {
 
     setLoading(true);
     try {
-      const user = await performLogin({ email, password });
+      const user = await auth.login({ email, password });
       onLogin(user);
     } catch (err) {
-      setError(err.message || "Otentikasi gagal. Periksa kredensial Anda.");
+      // Jika error jaringan / server tidak terhubung
+      if (!err.message || err.message === 'Network request failed' || err.message.includes('fetch')) {
+        setError("Terjadi kesalahan pada sistem");
+      } else {
+        // Jika kredensial tidak valid (401 dari backend)
+        setError("Maaf Username dan password salah");
+      }
     } finally {
       setLoading(false);
     }
@@ -48,6 +54,7 @@ export default function LoginScreen({ onLogin }) {
           <View style={s.logoContainer}>
             <View style={s.shieldIconWrap}>
               <View style={s.imageGridRow}>
+                
                 <Image
                   source={require("../../assets/images/logo4.png")}
                   style={s.logo}
@@ -67,14 +74,14 @@ export default function LoginScreen({ onLogin }) {
            {/* Login Card */}
           <View style={s.card}>
             {error ? (
-              <View style={s.errorBox}>
-                <Text style={{ fontSize: 14 }}>⚠️</Text>
-                <Text style={s.errorText}>{error}</Text>
+              <View style={s.loginErrorBox}>
+                <Text style={s.loginErrorText}>Maaf Username dan password salah</Text>
+                {/* <Text style={s.errorText}>{error}</Text> */}
               </View>
             ) : null}
 
             <View style={s.inputWrap}>
-              <Text style={s.inputLabel}>IDENTIFIER PENGGUNA</Text>
+              <Text style={s.inputLabel}>Email</Text>
               <TextInput
                 style={s.input}
                 value={email}
@@ -87,7 +94,7 @@ export default function LoginScreen({ onLogin }) {
             </View>
 
             <View style={s.inputWrap}>
-              <Text style={s.inputLabel}>KUNCI KRIPTOGRAFIS (KATA SANDI)</Text>
+              <Text style={s.inputLabel}>Password</Text>
               <TextInput
                 style={s.input}
                 value={password}
@@ -110,23 +117,23 @@ export default function LoginScreen({ onLogin }) {
                   style={{ flexDirection: "row", alignItems: "center", gap: 8 }}
                 >
                   <Text style={s.loginBtnText}>OTENTIKASI</Text>
-                  <Text style={{ fontSize: 16 }}>🔒</Text>
+                 {/*  <Text style={{ fontSize: 16 }}>🔒</Text> */}
                 </View>
               )}
             </TouchableOpacity>
 
             <View style={s.serverStatus}>
-              <View
+             {/*  <View
                 style={{
                   width: 8,
                   height: 8,
                   borderRadius: 4,
                   backgroundColor: C.green500,
                 }}
-              />
-              <Text style={s.serverStatusText}>
+              /> */}
+{/*               <Text style={s.serverStatusText}>
                 Gateway Server Aktif • Latensi 14ms
-              </Text>
+              </Text> */}
             </View>
           </View>
         </View>
