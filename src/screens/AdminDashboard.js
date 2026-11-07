@@ -1,445 +1,126 @@
 import React, { useState } from 'react';
-import { View, Text, ScrollView, TouchableOpacity, TextInput, Switch, SafeAreaView, Modal, ActivityIndicator } from 'react-native';
-import { C, s } from './styles/adminDashboardStyles';
-import * as Clipboard from 'expo-clipboard';
+import { View, Text, ScrollView, TouchableOpacity, SafeAreaView, Modal, ActivityIndicator } from 'react-native';
 import { auth } from '../services/auth';
 
 export default function SuperAdminDashboard({ user, onLogout }) {
-    const [activeTab, setActiveTab] = useState('threat'); // 'threat' or 'logs'
     const email = user?.identifier || 'superadmin@ayshed.biz.id';
 
-    // Threat specific state
-    const [panicMode, setPanicMode] = useState(false);
+    const [suspendModalVisible, setSuspendModalVisible] = useState(false);
+    const [usersList, setUsersList] = useState([]);
+    const [selectedUserId, setSelectedUserId] = useState(null);
+    const [suspendLoading, setSuspendLoading] = useState(false);
+    const [suspendMessage, setSuspendMessage] = useState('');
 
-    // Log specific state
-    const [searchQuery, setSearchQuery] = useState('');
-    const [logFilter, setLogFilter] = useState('all'); // 'all', 'success', 'failed'
+    const openSuspendModal = async () => {
+        setSuspendMessage('');
+        setSelectedUserId(null);
+        setSuspendModalVisible(true);
+        try {
+            const users = await auth.getUsers();
+            setUsersList(users || []);
+        } catch (err) {
+            setSuspendMessage('Gagal memuat daftar user: ' + (err.message || 'Unknown error'));
+        }
+    };
 
-  // Suspend user modal state
-  const [suspendModalVisible, setSuspendModalVisible] = useState(false);
-  const [usersList, setUsersList] = useState([]);
-  const [selectedUserId, setSelectedUserId] = useState(null);
-  const [suspendLoading, setSuspendLoading] = useState(false);
-  const [suspendMessage, setSuspendMessage] = useState('');
+    const handleSuspend = async () => {
+        if (!selectedUserId) {
+            setSuspendMessage('Pilih user terlebih dahulu');
+            return;
+        }
+        setSuspendLoading(true);
+        setSuspendMessage('');
+        try {
+            const result = await auth.suspendUser(selectedUserId);
+            setSuspendMessage(result?.message || 'User berhasil di-suspend');
+        } catch (err) {
+            setSuspendMessage('Gagal suspend: ' + (err.message || 'Unknown error'));
+        } finally {
+            setSuspendLoading(false);
+        }
+    };
 
-    const showToast = (msg) => {
-    // In real app, trigger native toast or custom component
-    console.log('[TOAST]', msg);
-  };
-
-  const openSuspendModal = async () => {
-    setSuspendMessage('');
-    setSelectedUserId(null);
-    setSuspendModalVisible(true);
-    try {
-      const users = await auth.getUsers();
-      setUsersList(users || []);
-    } catch (err) {
-      setSuspendMessage('Gagal memuat daftar user: ' + (err.message || 'Unknown error'));
-    }
-  };
-
-  const handleSuspend = async () => {
-    if (!selectedUserId) {
-      setSuspendMessage('Pilih user terlebih dahulu');
-      return;
-    }
-    setSuspendLoading(true);
-    setSuspendMessage('');
-    try {
-      const result = await auth.suspendUser(selectedUserId);
-      setSuspendMessage(result?.message || 'User berhasil di-suspend');
-    } catch (err) {
-      setSuspendMessage('Gagal suspend: ' + (err.message || 'Unknown error'));
-    } finally {
-      setSuspendLoading(false);
-    }
-  };
-
-  const handleCopyIp = async (ip) => {
-    await Clipboard.setStringAsync(ip);
-    showToast('IP disalin: ' + ip);
-  };
-
-    const renderHeader = () => (
-        <View style={s.header}>
-            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}>
-                <View style={s.headerAvatar}>
-                    <Text style={{ fontSize: 13, fontWeight: '700', color: C.primaryDark }}>SA</Text>
-                </View>
+    return (
+        <SafeAreaView style={{ flex: 1, backgroundColor: '#0f172a' }}>
+            <View style={{ padding: 16, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', borderBottomWidth: 1, borderBottomColor: '#1e293b' }}>
                 <View>
-                    <Text style={s.headerTitle}>SecOps Executive</Text>
-                    <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6, marginTop: 2 }}>
-                        <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: C.accentYellow }} />
-                        <Text style={s.headerSubtitle}>SENTINEL VANGUARD</Text>
-                    </View>
+                    <Text style={{ fontSize: 16, fontWeight: '700', color: '#fff' }}>SecOps Executive</Text>
+                    <Text style={{ fontSize: 12, color: '#94a3b8', marginTop: 2 }}>{email}</Text>
                 </View>
-            </View>
-            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
-                <TouchableOpacity style={s.notifBtn} onPress={() => showToast('Notifikasi tersinkronisasi')}>
-                    <Text style={{ fontSize: 16 }}>🔔</Text>
-                    <View style={s.notifDot} />
-                </TouchableOpacity>
-                <TouchableOpacity style={{ backgroundColor: '#ef4444', paddingHorizontal: 10, paddingVertical: 6, borderRadius: 6 }} onPress={openSuspendModal}>
-                    <Text style={{ color: '#fff', fontSize: 11, fontWeight: '700' }}>SUSPEND</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={s.logoutBtn} onPress={onLogout}>
-                    <Text style={s.logoutText}>KELUAR</Text>
-                </TouchableOpacity>
-            </View>
-        </View>
-    );
-
-    const renderUserInfo = () => (
-        <View style={s.userCard}>
-            <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-                <View>
-                    <Text style={{ fontSize: 11, fontWeight: '600', color: C.blue300, textTransform: 'uppercase', letterSpacing: 0.5 }}>Welcome back,</Text>
-                    <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8, marginTop: 4 }}>
-                        <Text style={{ fontSize: 15, fontWeight: '700', color: C.white }}>{email}</Text>
-                        <Text style={{ fontSize: 16, color: C.accentYellow }}>🛡️</Text>
-                    </View>
-                </View>
-                <View style={s.liveBadge}>
-                    <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: C.accentYellow }} />
-                    <Text style={s.liveBadgeText}>LIVE</Text>
-                </View>
-            </View>
-
-            <View style={s.clearanceBanner}>
-                <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
-                    <Text style={{ fontSize: 16 }}>🔑</Text>
-                    <Text style={s.clearanceText}>SUPERADMIN — Level 4 Clearance</Text>
-                </View>
-                <View style={s.idBadge}>
-                    <Text style={s.idBadgeText}>ID: SEC-8092</Text>
-                </View>
-            </View>
-        </View>
-    );
-
-    const renderTabs = () => (
-        <View style={s.tabContainer}>
-            <TouchableOpacity
-                style={[s.tabBtn, activeTab === 'threat' && s.tabBtnActive]}
-                onPress={() => setActiveTab('threat')}
-            >
-                <Text style={[s.tabText, activeTab === 'threat' && s.tabTextActive]}>THREATS</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-                style={[s.tabBtn, activeTab === 'logs' && s.tabBtnActive]}
-                onPress={() => setActiveTab('logs')}
-            >
-                <Text style={[s.tabText, activeTab === 'logs' && s.tabTextActive]}>AUDIT LOGS</Text>
-            </TouchableOpacity>
-        </View>
-    );
-
-    const renderThreatTab = () => (
-        <View style={{ gap: 16 }}>
-            {/* Panic Protocol */}
-            <View style={s.panicCard}>
-                <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                    <View style={{ flexDirection: 'row', gap: 12, flex: 1 }}>
-                        <View style={s.panicIconWrap}><Text style={{ fontSize: 20 }}>🔄</Text></View>
-                        <View style={{ flex: 1 }}>
-                            <View style={{ flexDirection: 'row', alignItems: 'center', flexWrap: 'wrap', gap: 8 }}>
-                                <Text style={{ fontSize: 14, fontWeight: '700', color: C.white }}>Protokol Isolasi Sesi</Text>
-                                <View style={s.guardrailBadge}><Text style={s.guardrailText}>Safe Guardrail</Text></View>
-                            </View>
-                            <Text style={{ fontSize: 12, color: C.blue200, marginTop: 4, lineHeight: 18 }}>Tindakan administratif graceful: pemutusan ingress instan & pencabutan sesi aman.</Text>
-                        </View>
-                    </View>
-                    <Switch
-                        value={panicMode}
-                        onValueChange={setPanicMode}
-                        trackColor={{ false: C.cardBlueLight, true: C.red500 }}
-                        thumbColor={C.white}
-                    />
-                </View>
-                <View style={s.panicFoot}>
-                    <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6 }}>
-                        <View style={{ width: 8, height: 8, borderRadius: 4, backgroundColor: C.green500 }} />
-                        <Text style={{ fontSize: 11, fontWeight: '500', color: C.blue200 }}>Failover Standby: Cluster Ready</Text>
-                    </View>
-                    <View style={s.isolationBadge}><Text style={s.isolationText}>ISOLASI NONAKTIF</Text></View>
-                </View>
-            </View>
-
-            {/* Metric Grid */}
-            <View style={{ flexDirection: 'row', gap: 10 }}>
-                <View style={s.metricCard}>
-                    <Text style={s.metricLabel}>Terblokir</Text>
-                    <Text style={s.metricValueWhite}>14</Text>
-                    <View style={s.metricSubRed}><Text style={s.metricSubRedText}>+4 hari ini</Text></View>
-                </View>
-                <View style={s.metricCardYellow}>
-                    <Text style={s.metricLabelDark}>Brute Force</Text>
-                    <Text style={s.metricValueDark}>3</Text>
-                    <View style={s.metricSubDark}><Text style={s.metricSubDarkText}>rentang 10m</Text></View>
-                </View>
-                <View style={s.metricCard}>
-                    <Text style={s.metricLabel}>Anomali</Text>
-                    <Text style={s.metricValueWhite}>1</Text>
-                    <View style={s.metricSubYellow}><Text style={s.metricSubYellowText}>Ditandai</Text></View>
-                </View>
-            </View>
-
-            {/* Incidents Title */}
-            <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingHorizontal: 4 }}>
-                <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
-                    <View style={{ width: 8, height: 8, borderRadius: 4, backgroundColor: C.accentYellow }} />
-                    <Text style={{ fontSize: 12, fontWeight: '700', color: C.white, tracking: 1, textTransform: 'uppercase' }}>Insiden Aktif</Text>
-                    <View style={s.incidentsCount}><Text style={s.incidentsCountText}>2 Perlu Tindakan</Text></View>
-                </View>
-            </View>
-
-            {/* Incident 1 - Critical */}
-            <View style={[s.incidentCard, { borderColor: C.red500 }]}>
-                <View style={[s.incidentStripe, { backgroundColor: C.red500 }]} />
-                <View style={s.incidentInner}>
-                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 12 }}>
-                        <View style={{ flex: 1, gap: 4 }}>
-                            <View style={{ flexDirection: 'row', gap: 8, alignItems: 'center', flexWrap: 'wrap' }}>
-                                <Text style={{ fontFamily: 'monospace', fontSize: 14, fontWeight: '700', color: C.white }}>ID Pengguna #8841</Text>
-                                <View style={s.criticalBadge}><Text style={s.criticalBadgeText}>● Kritis</Text></View>
-                            </View>
-                            <Text style={{ fontSize: 12, color: C.blue200 }}>Lonjakan impulsif <Text style={{ fontFamily: 'monospace', backgroundColor: C.red600, color: C.white, paddingHorizontal: 4 }}>200 req/s</Text> pada autentikasi privat.</Text>
-                        </View>
-                        <Text style={{ fontFamily: 'monospace', fontSize: 11, color: C.blue300 }}>14 mnt lalu</Text>
-                    </View>
-                    <TouchableOpacity style={s.dangerBtn}>
-                        <Text style={{ fontSize: 16 }}>⚡</Text>
-                        <Text style={s.dangerBtnText}>Putus JWT & Tangguhkan Sesi</Text>
+                <View style={{ flexDirection: 'row', gap: 8 }}>
+                    <TouchableOpacity style={{ backgroundColor: '#ef4444', paddingHorizontal: 12, paddingVertical: 8, borderRadius: 6 }} onPress={openSuspendModal}>
+                        <Text style={{ color: '#fff', fontSize: 12, fontWeight: '700' }}>SUSPEND</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={{ backgroundColor: '#334155', paddingHorizontal: 12, paddingVertical: 8, borderRadius: 6 }} onPress={onLogout}>
+                        <Text style={{ color: '#e2e8f0', fontSize: 12, fontWeight: '700' }}>KELUAR</Text>
                     </TouchableOpacity>
                 </View>
             </View>
 
-            {/* Incident 2 - Warning */}
-            <View style={[s.incidentCard, { borderColor: C.accentYellowHover }]}>
-                <View style={[s.incidentStripe, { backgroundColor: C.accentYellowHover }]} />
-                <View style={s.incidentInner}>
-                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 12 }}>
-                        <View style={{ flex: 1, gap: 4 }}>
-                            <View style={{ flexDirection: 'row', gap: 8, alignItems: 'center', flexWrap: 'wrap' }}>
-                                <Text style={{ fontFamily: 'monospace', fontSize: 14, fontWeight: '700', color: C.white }}>185.220.101.45</Text>
-                                <View style={s.warnBadge}><Text style={s.warnBadgeText}>▲ Peringatan</Text></View>
-                            </View>
-                            <Text style={{ fontSize: 12, color: C.blue200 }}>45 upaya login gagal pada <Text style={{ fontFamily: 'monospace', backgroundColor: C.accentYellowHover, color: C.primaryDark, paddingHorizontal: 4 }}>/api/v1/login</Text></Text>
-                        </View>
-                        <Text style={{ fontFamily: 'monospace', fontSize: 11, color: C.blue300 }}>23 mnt lalu</Text>
-                    </View>
-                    <View style={{ flexDirection: 'row', gap: 10, borderTopWidth: 1, borderTopColor: C.cardBlueLight, paddingTop: 12 }}>
-                        <TouchableOpacity style={s.btnOutline}>
-                            <Text style={s.btnOutlineText}>Lepas Blokir</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity style={s.btnWarning}>
-                            <Text style={{ fontSize: 14 }}>🚫</Text>
-                            <Text style={s.btnWarningText}>Blokir IP</Text>
-                        </TouchableOpacity>
-                    </View>
-                </View>
+            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', padding: 24 }}>
+                <Text style={{ fontSize: 14, color: '#94a3b8', textAlign: 'center' }}>
+                    Dashboard SuperAdmin — fitur ancaman dan audit log sedang dalam pengembangan.
+                </Text>
             </View>
 
-            <View style={{ height: 40 }} />
-        </View>
-    );
+            <Modal
+                visible={suspendModalVisible}
+                transparent
+                animationType="slide"
+                onRequestClose={() => setSuspendModalVisible(false)}
+            >
+                <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'rgba(0,0,0,0.5)' }}>
+                    <View style={{ width: '90%', backgroundColor: '#1e293b', borderRadius: 12, padding: 20, maxHeight: '70%' }}>
+                        <Text style={{ fontSize: 16, fontWeight: '700', color: '#fff', marginBottom: 12 }}>Suspend Akun</Text>
 
-    const renderLogsTab = () => (
-        <View style={{ gap: 16 }}>
-            {/* Search */}
-            <View style={s.searchWrap}>
-                <View style={s.searchInputWrap}>
-                    <Text style={{ fontSize: 16 }}>🔍</Text>
-                    <TextInput
-                        style={s.searchInput}
-                        placeholder="Cari IP, Pengguna..."
-                        placeholderTextColor={C.slate500}
-                        value={searchQuery}
-                        onChangeText={setSearchQuery}
-                    />
-                </View>
-            </View>
+                        {suspendLoading && <ActivityIndicator color="#facc15" style={{ marginBottom: 12 }} />}
 
-            {/* Filters */}
-            <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ gap: 8, paddingBottom: 4 }}>
-                <TouchableOpacity style={[s.filterPill, logFilter === 'all' ? s.filterPillActiveYellow : s.filterPillInactive]} onPress={() => setLogFilter('all')}>
-                    <Text style={[s.filterPillText, logFilter === 'all' ? { color: C.primaryDark } : { color: C.blue200 }]}>Semua</Text>
-                    <View style={[s.filterPillCount, logFilter === 'all' ? { backgroundColor: C.cardBlue } : { backgroundColor: C.cardBlueLight }]}><Text style={s.filterPillCountText}>10</Text></View>
-                </TouchableOpacity>
+                        {suspendMessage ? (
+                            <Text style={{ color: suspendMessage.includes('Gagal') ? '#ef4444' : '#22c55e', marginBottom: 12, fontSize: 13 }}>
+                                {suspendMessage}
+                            </Text>
+                        ) : null}
 
-                <TouchableOpacity style={[s.filterPill, logFilter === 'success' ? s.filterPillActiveGreen : s.filterPillInactiveBordered]} onPress={() => setLogFilter('success')}>
-                    <View style={{ width: 8, height: 8, borderRadius: 4, backgroundColor: C.emerald500 }} />
-                    <Text style={[s.filterPillText, logFilter === 'success' ? { color: C.white } : { color: C.emerald500 }]}>Sukses</Text>
-                    <View style={[s.filterPillCount, logFilter === 'success' ? { backgroundColor: C.emerald700 } : { backgroundColor: C.cardBlue, borderWidth: 1, borderColor: C.emerald700 }]}><Text style={s.filterPillCountText}>8</Text></View>
-                </TouchableOpacity>
+                        <ScrollView style={{ maxHeight: 200, marginBottom: 12 }}>
+                            {usersList.map((u) => (
+                                <TouchableOpacity
+                                    key={u.id}
+                                    style={{
+                                        padding: 12,
+                                        borderRadius: 8,
+                                        marginBottom: 6,
+                                        backgroundColor: selectedUserId === u.id ? '#facc15' : '#334155',
+                                    }}
+                                    onPress={() => setSelectedUserId(u.id)}
+                                >
+                                    <Text style={{ color: selectedUserId === u.id ? '#0f172a' : '#e2e8f0', fontWeight: '600', fontSize: 13 }}>
+                                        {u.email}
+                                    </Text>
+                                    <Text style={{ color: selectedUserId === u.id ? '#0f172a' : '#94a3b8', fontSize: 11, marginTop: 2 }}>
+                                        Role: {u.role} | Status: {u.is_active ? 'Aktif' : 'Suspended'}
+                                    </Text>
+                                </TouchableOpacity>
+                            ))}
+                        </ScrollView>
 
-                <TouchableOpacity style={[s.filterPill, logFilter === 'failed' ? s.filterPillActiveRed : s.filterPillInactiveBordered]} onPress={() => setLogFilter('failed')}>
-                    <View style={{ width: 8, height: 8, borderRadius: 4, backgroundColor: C.red500 }} />
-                    <Text style={[s.filterPillText, logFilter === 'failed' ? { color: C.white } : { color: C.red500 }]}>Gagal</Text>
-                    <View style={[s.filterPillCount, logFilter === 'failed' ? { backgroundColor: C.red800 } : { backgroundColor: C.cardBlue, borderWidth: 1, borderColor: C.red800 }]}><Text style={s.filterPillCountText}>2</Text></View>
-                </TouchableOpacity>
-            </ScrollView>
-
-            {/* Log Feed */}
-            <LogCard
-                id="#10" status="success" date="19 Sep 2026, 10:47:13" email="superadmin@ayshed.biz.id"
-                ip="127.0.0.1" agent="🚀 Postman 7.39.1" authLabel="Token Bearer"
-                isYellow
-            />
-            <LogCard
-                id="#9" status="success" date="19 Sep 2026, 10:36:30" email="superadmin@ayshed.biz.id"
-                ip="10.154.197.250" agent="🤖 OkHttp/Android 4.12.0" authLabel="Basic Auth"
-            />
-            <LogCard
-                id="#3" status="failed" date="18 Sep 2026, 14:41:52" email="superadmin@ayshed.biz.id"
-                ip="172.25.159.164" agent="🤖 OkHttp/Android 4.12.0" reason="Invalid credentials" statusCode="401 Unauthorized"
-                isRedAlert
-            />
-
-            <View style={{ height: 40 }} />
-        </View>
-    );
-
-    return (
-        <>
-        <SafeAreaView style={s.root}>
-            {renderHeader()}
-            <ScrollView contentContainerStyle={s.scroll} showsVerticalScrollIndicator={false}>
-                {renderUserInfo()}
-                {renderTabs()}
-                {activeTab === 'threat' ? renderThreatTab() : renderLogsTab()}
-            </ScrollView>
-
-            {/* Bottom Nav */}
-            <View style={s.bottomNav}>
-                <TouchableOpacity style={s.bottomNavItem} onPress={() => setActiveTab('threat')}>
-                    <Text style={{ fontSize: 24 }}>{activeTab === 'threat' ? '🛡️' : '🛡️'}</Text>
-                    <Text style={[s.bottomNavText, activeTab === 'threat' ? { color: C.accentYellow } : { color: C.blue300 }]}>Threats</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={s.bottomNavItem} onPress={() => setActiveTab('logs')}>
-                    <Text style={{ fontSize: 24, opacity: activeTab === 'logs' ? 1 : 0.6 }}>📖</Text>
-                    <Text style={[s.bottomNavText, activeTab === 'logs' ? { color: C.accentYellow } : { color: C.blue300 }]}>Audit Logs</Text>
-                </TouchableOpacity>
-            </View>
-        </SafeAreaView>
-
-        {/* Suspend User Modal */}
-        <Modal
-            visible={suspendModalVisible}
-            transparent
-            animationType="slide"
-            onRequestClose={() => setSuspendModalVisible(false)}
-        >
-            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'rgba(0,0,0,0.5)' }}>
-                <View style={{ width: '90%', backgroundColor: '#1e293b', borderRadius: 12, padding: 20, maxHeight: '70%' }}>
-                    <Text style={{ fontSize: 16, fontWeight: '700', color: '#fff', marginBottom: 12 }}>Suspend Akun</Text>
-
-                    {suspendLoading && <ActivityIndicator color="#facc15" style={{ marginBottom: 12 }} />}
-
-                    {suspendMessage ? (
-                        <Text style={{ color: suspendMessage.includes('Gagal') ? '#ef4444' : '#22c55e', marginBottom: 12, fontSize: 13 }}>
-                            {suspendMessage}
-                        </Text>
-                    ) : null}
-
-                    <ScrollView style={{ maxHeight: 200, marginBottom: 12 }}>
-                        {usersList.map((u) => (
+                        <View style={{ flexDirection: 'row', gap: 10 }}>
                             <TouchableOpacity
-                                key={u.id}
-                                style={{
-                                    padding: 12,
-                                    borderRadius: 8,
-                                    marginBottom: 6,
-                                    backgroundColor: selectedUserId === u.id ? '#facc15' : '#334155',
-                                }}
-                                onPress={() => setSelectedUserId(u.id)}
+                                style={{ flex: 1, padding: 12, borderRadius: 8, backgroundColor: '#334155', alignItems: 'center' }}
+                                onPress={() => setSuspendModalVisible(false)}
                             >
-                                <Text style={{ color: selectedUserId === u.id ? '#0f172a' : '#e2e8f0', fontWeight: '600', fontSize: 13 }}>
-                                    {u.email}
-                                </Text>
-                                <Text style={{ color: selectedUserId === u.id ? '#0f172a' : '#94a3b8', fontSize: 11, marginTop: 2 }}>
-                                    Role: {u.role} | Status: {u.is_active ? 'Aktif' : 'Suspended'}
-                                </Text>
+                                <Text style={{ color: '#e2e8f0', fontWeight: '600' }}>Batal</Text>
                             </TouchableOpacity>
-                        ))}
-                    </ScrollView>
-
-                    <View style={{ flexDirection: 'row', gap: 10 }}>
-                        <TouchableOpacity
-                            style={{ flex: 1, padding: 12, borderRadius: 8, backgroundColor: '#334155', alignItems: 'center' }}
-                            onPress={() => setSuspendModalVisible(false)}
-                        >
-                            <Text style={{ color: '#e2e8f0', fontWeight: '600' }}>Batal</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity
-                            style={{ flex: 1, padding: 12, borderRadius: 8, backgroundColor: '#ef4444', alignItems: 'center', opacity: suspendLoading ? 0.5 : 1 }}
-                            onPress={handleSuspend}
-                            disabled={suspendLoading}
-                        >
-                            <Text style={{ color: '#fff', fontWeight: '700' }}>Suspend</Text>
-                        </TouchableOpacity>
+                            <TouchableOpacity
+                                style={{ flex: 1, padding: 12, borderRadius: 8, backgroundColor: '#ef4444', alignItems: 'center', opacity: suspendLoading ? 0.5 : 1 }}
+                                onPress={handleSuspend}
+                                disabled={suspendLoading}
+                            >
+                                <Text style={{ color: '#fff', fontWeight: '700' }}>Suspend</Text>
+                            </TouchableOpacity>
+                        </View>
                     </View>
                 </View>
-            </View>
-        </Modal>
-        </>
+            </Modal>
+        </SafeAreaView>
     );
-}
-
-// Subcomponent for Audit Log Card
-function LogCard({ id, status, date, email, ip, agent, authLabel, reason, statusCode, isYellow, isRedAlert }) {
-    const isErr = status === 'failed';
-
-    let wrapperStyle = [s.logWrap];
-    if (isYellow) wrapperStyle.push(s.logWrapYellow);
-    else if (isRedAlert) wrapperStyle.push(s.logWrapRed);
-    else wrapperStyle.push(s.logWrapBlue);
-
-    return (
-        <View style={wrapperStyle}>
-            <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-                <View style={{ flexDirection: 'row', gap: 8, alignItems: 'center' }}>
-                    <Text style={[s.logId, (isYellow || isRedAlert) && { color: C.primaryDark }]}>{id}</Text>
-                    <View style={isErr ? s.logBadgeRed : s.logBadgeGreen}>
-                        <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: isErr ? C.white : '#34d399' }} />
-                        <Text style={{ fontSize: 10, fontWeight: '700', color: C.white, fontFamily: 'monospace' }}>{isErr ? 'Gagal' : 'Sukses'}</Text>
-                    </View>
-                </View>
-                <Text style={{ fontSize: 11, fontWeight: '600', color: (isYellow || isRedAlert) ? C.primaryDark : C.blue200, fontFamily: 'monospace' }}>{date}</Text>
-            </View>
-
-            <View style={{ marginTop: 10 }}>
-                <Text style={[s.logEmail, (isYellow || isRedAlert) && { color: C.primaryDark }]}>{email}</Text>
-                <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 8, marginTop: 10 }}>
-                    <View style={[s.ipTag, isYellow ? { backgroundColor: C.white, borderColor: C.accentYellowHover } : isRedAlert ? { backgroundColor: C.red900, borderColor: C.red600 } : { backgroundColor: C.cardBlueLight, borderColor: C.borderBlue }]}>
-                        <Text style={{ fontSize: 11, color: isYellow ? C.slate500 : isRedAlert ? C.blue200 : C.blue300, fontFamily: 'monospace' }}>IP: </Text>
-                        <Text style={{ fontSize: 11, fontWeight: '700', color: isYellow ? C.primaryDark : isRedAlert ? C.slate100 : C.accentYellow, fontFamily: 'monospace' }}>{ip}</Text>
-                    </View>
-                    <View style={[s.agentTag, isYellow ? { backgroundColor: '#b45309' } : isRedAlert ? { backgroundColor: C.accentYellow } : { backgroundColor: C.cardBlueDark }]}>
-                        <Text style={{ fontSize: 11, fontWeight: '700', color: (isRedAlert || !isYellow && !isRedAlert) ? C.primaryDark : C.white, fontFamily: 'monospace' }}>{agent}</Text>
-                    </View>
-                </View>
-
-                {isErr && (
-                    <View style={s.errorReason}>
-                        <Text style={{ fontSize: 16 }}>⚠️</Text>
-                        <Text style={{ fontSize: 11, fontWeight: '700', fontFamily: 'monospace', color: C.primaryDark }}>Alasan: <Text style={{ color: C.red900 }}>"{reason}"</Text></Text>
-                    </View>
-                )}
-            </View>
-
-            <View style={[s.logFoot, { borderTopColor: isYellow ? C.accentYellowHover : isRedAlert ? 'rgba(153,27,27,0.6)' : C.cardBlueLight }]}>
-                {isErr ? (
-                    <Text style={{ fontSize: 11, fontWeight: '700', fontFamily: 'monospace', color: C.red500 }}>{statusCode}</Text>
-                ) : (
-                    <Text style={{ fontSize: 11, fontWeight: '600', fontFamily: 'monospace', color: isYellow ? C.primaryDark : C.blue200 }}>Auth: <Text style={{ fontWeight: '700', color: isYellow ? C.cardBlue : C.accentYellow }}>{authLabel}</Text></Text>
-                )}
-                <View style={{ flexDirection: 'row', gap: 8 }}>
-                    <TouchableOpacity style={[s.logBtnSm, isYellow && { backgroundColor: C.white, borderColor: '#cbd5e1' }]} onPress={() => handleCopyIp(ip)}><Text style={[s.logBtnSmText, isYellow && { color: C.primaryDark }]}>Copy IP</Text></TouchableOpacity>
-                    <TouchableOpacity style={[s.logBtnPrimary, isErr && { backgroundColor: C.red600 }]}><Text style={s.logBtnPrimaryText}>{isErr ? 'Block IP' : 'Inspect'}</Text></TouchableOpacity>
-                </View>
-            </View>
-        </View>
-    )
 }
