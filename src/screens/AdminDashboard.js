@@ -2,14 +2,22 @@ import React, { useState } from 'react';
 import { View, Text, ScrollView, TouchableOpacity, SafeAreaView, Modal, ActivityIndicator } from 'react-native';
 import { auth } from '../services/auth';
 
-export default function SuperAdminDashboard({ user, onLogout }) {
-    const email = user?.identifier || 'superadmin@ayshed.biz.id';
+export default function AdminDashboard({ user, onLogout }) {
+    const email = user?.identifier || 'admin@ayshed.biz.id';
 
+    // Navigation state: 'dashboard' | 'suspend' | 'listUser' | 'listContainer'
+    const [view, setView] = useState('dashboard');
+
+    // Suspend modal state
     const [suspendModalVisible, setSuspendModalVisible] = useState(false);
     const [usersList, setUsersList] = useState([]);
     const [selectedUserId, setSelectedUserId] = useState(null);
     const [suspendLoading, setSuspendLoading] = useState(false);
     const [suspendMessage, setSuspendMessage] = useState('');
+
+    // List user state
+    const [listUsers, setListUsers] = useState([]);
+    const [listUsersLoading, setListUsersLoading] = useState(false);
 
     const openSuspendModal = async () => {
         setSuspendMessage('');
@@ -40,29 +48,112 @@ export default function SuperAdminDashboard({ user, onLogout }) {
         }
     };
 
-    return (
-        <SafeAreaView style={{ flex: 1, backgroundColor: '#0f172a' }}>
-            <View style={{ padding: 16, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', borderBottomWidth: 1, borderBottomColor: '#1e293b' }}>
-                <View>
-                    <Text style={{ fontSize: 16, fontWeight: '700', color: '#fff' }}>SecOps Executive</Text>
-                    <Text style={{ fontSize: 12, color: '#94a3b8', marginTop: 2 }}>{email}</Text>
-                </View>
-                <View style={{ flexDirection: 'row', gap: 8 }}>
-                    <TouchableOpacity style={{ backgroundColor: '#ef4444', paddingHorizontal: 12, paddingVertical: 8, borderRadius: 6 }} onPress={openSuspendModal}>
-                        <Text style={{ color: '#fff', fontSize: 12, fontWeight: '700' }}>SUSPEND</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={{ backgroundColor: '#334155', paddingHorizontal: 12, paddingVertical: 8, borderRadius: 6 }} onPress={onLogout}>
-                        <Text style={{ color: '#e2e8f0', fontSize: 12, fontWeight: '700' }}>KELUAR</Text>
-                    </TouchableOpacity>
-                </View>
-            </View>
+    const loadListUsers = async () => {
+        setListUsersLoading(true);
+        try {
+            const users = await auth.getUsers();
+            setListUsers(users || []);
+        } catch (err) {
+            setListUsers([]);
+        } finally {
+            setListUsersLoading(false);
+        }
+    };
 
+    const renderHeader = () => (
+        <View style={{ padding: 16, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', borderBottomWidth: 1, borderBottomColor: '#1e293b' }}>
+            <View>
+                <Text style={{ fontSize: 16, fontWeight: '700', color: '#fff' }}>Admin Dashboard</Text>
+                <Text style={{ fontSize: 12, color: '#94a3b8', marginTop: 2 }}>{email}</Text>
+            </View>
+            <TouchableOpacity style={{ backgroundColor: '#334155', paddingHorizontal: 12, paddingVertical: 8, borderRadius: 6 }} onPress={onLogout}>
+                <Text style={{ color: '#e2e8f0', fontSize: 12, fontWeight: '700' }}>KELUAR</Text>
+            </TouchableOpacity>
+        </View>
+    );
+
+    const renderBackButton = () => (
+        <TouchableOpacity
+            style={{ flexDirection: 'row', alignItems: 'center', padding: 16, gap: 8 }}
+            onPress={() => setView('dashboard')}
+        >
+            <Text style={{ color: '#facc15', fontSize: 16, fontWeight: '700' }}>← Kembali</Text>
+        </TouchableOpacity>
+    );
+
+    const renderGrid = () => (
+        <View style={{ padding: 16 }}>
+            <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 12 }}>
+                <TouchableOpacity
+                    style={{ flex: 1, minWidth: '45%', backgroundColor: '#1e293b', borderRadius: 12, padding: 20, alignItems: 'center', gap: 8, borderWidth: 1, borderColor: '#334155' }}
+                    onPress={openSuspendModal}
+                >
+                    <Text style={{ fontSize: 28 }}>🚫</Text>
+                    <Text style={{ color: '#e2e8f0', fontSize: 13, fontWeight: '700' }}>Suspend</Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity
+                    style={{ flex: 1, minWidth: '45%', backgroundColor: '#1e293b', borderRadius: 12, padding: 20, alignItems: 'center', gap: 8, borderWidth: 1, borderColor: '#334155' }}
+                    onPress={() => { setView('listUser'); loadListUsers(); }}
+                >
+                    <Text style={{ fontSize: 28 }}>👥</Text>
+                    <Text style={{ color: '#e2e8f0', fontSize: 13, fontWeight: '700' }}>List User</Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity
+                    style={{ flex: 1, minWidth: '45%', backgroundColor: '#1e293b', borderRadius: 12, padding: 20, alignItems: 'center', gap: 8, borderWidth: 1, borderColor: '#334155' }}
+                    onPress={() => setView('listContainer')}
+                >
+                    <Text style={{ fontSize: 28 }}>📦</Text>
+                    <Text style={{ color: '#e2e8f0', fontSize: 13, fontWeight: '700' }}>List Container</Text>
+                </TouchableOpacity>
+            </View>
+        </View>
+    );
+
+    const renderListUser = () => (
+        <View style={{ flex: 1 }}>
+            {renderBackButton()}
+            <ScrollView contentContainerStyle={{ padding: 16, gap: 8 }}>
+                {listUsersLoading ? (
+                    <ActivityIndicator color="#facc15" />
+                ) : listUsers.length === 0 ? (
+                    <Text style={{ color: '#94a3b8', textAlign: 'center', marginTop: 24 }}>Tidak ada user</Text>
+                ) : (
+                    listUsers.map((u) => (
+                        <View key={u.id} style={{ backgroundColor: '#1e293b', borderRadius: 10, padding: 14, borderWidth: 1, borderColor: '#334155' }}>
+                            <Text style={{ color: '#e2e8f0', fontWeight: '600', fontSize: 13 }}>{u.email}</Text>
+                            <Text style={{ color: '#94a3b8', fontSize: 11, marginTop: 2 }}>Role: {u.role} | Status: {u.is_active ? 'Aktif' : 'Suspended'}</Text>
+                        </View>
+                    ))
+                )}
+            </ScrollView>
+        </View>
+    );
+
+    const renderListContainer = () => (
+        <View style={{ flex: 1 }}>
+            {renderBackButton()}
             <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', padding: 24 }}>
                 <Text style={{ fontSize: 14, color: '#94a3b8', textAlign: 'center' }}>
-                    Dashboard SuperAdmin — fitur ancaman dan audit log sedang dalam pengembangan.
+                    Fitur List Container sedang dalam pengembangan.
                 </Text>
             </View>
+        </View>
+    );
 
+    return (
+        <SafeAreaView style={{ flex: 1, backgroundColor: '#0f172a' }}>
+            {renderHeader()}
+            {view === 'dashboard' && (
+                <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+                    {renderGrid()}
+                </ScrollView>
+            )}
+            {view === 'listUser' && renderListUser()}
+            {view === 'listContainer' && renderListContainer()}
+
+            {/* Suspend Modal */}
             <Modal
                 visible={suspendModalVisible}
                 transparent
