@@ -85,7 +85,7 @@ export default function AdminDashboard({ user, onLogout }) {
         <View style={{ padding: 16 }}>
             <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 12 }}>
                 <TouchableOpacity
-                    style={{ flex: 1, minWidth: '45%', backgroundColor: '#ffffff', borderRadius: 12, padding: 20, alignItems: 'center', gap: 8, borderWidth: 1, borderColor: '#bfdbfe' }}
+                    style={{ flex: 1, minWidth: '45%', backgroundColor: '#facc15', borderRadius: 12, padding: 20, alignItems: 'center', gap: 8, borderWidth: 1, borderColor: '#eab308' }}
                     onPress={openSuspendModal}
                 >
                     <Text style={{ fontSize: 28 }}>🚫</Text>
@@ -93,7 +93,7 @@ export default function AdminDashboard({ user, onLogout }) {
                 </TouchableOpacity>
 
                 <TouchableOpacity
-                    style={{ flex: 1, minWidth: '45%', backgroundColor: '#ffffff', borderRadius: 12, padding: 20, alignItems: 'center', gap: 8, borderWidth: 1, borderColor: '#bfdbfe' }}
+                    style={{ flex: 1, minWidth: '45%', backgroundColor: '#facc15', borderRadius: 12, padding: 20, alignItems: 'center', gap: 8, borderWidth: 1, borderColor: '#eab308' }}
                     onPress={() => { setView('listUser'); loadListUsers(); }}
                 >
                     <Text style={{ fontSize: 28 }}>👥</Text>
@@ -101,7 +101,7 @@ export default function AdminDashboard({ user, onLogout }) {
                 </TouchableOpacity>
 
                 <TouchableOpacity
-                    style={{ flex: 1, minWidth: '45%', backgroundColor: '#ffffff', borderRadius: 12, padding: 20, alignItems: 'center', gap: 8, borderWidth: 1, borderColor: '#bfdbfe' }}
+                    style={{ flex: 1, minWidth: '45%', backgroundColor: '#facc15', borderRadius: 12, padding: 20, alignItems: 'center', gap: 8, borderWidth: 1, borderColor: '#eab308' }}
                     onPress={() => setView('listContainer')}
                 >
                     <Text style={{ fontSize: 28 }}>📦</Text>
