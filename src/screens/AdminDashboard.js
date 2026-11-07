@@ -39,7 +39,7 @@ export default function AdminDashboard({ user, onLogout }) {
         setSuspendLoading(true);
         setSuspendMessage('');
         try {
-            const result = await auth.suspendUser(selectedUserId);
+            const result = await auth.suspendUser(String(selectedUserId));
             setSuspendMessage(result?.message || 'User berhasil di-suspend');
         } catch (err) {
             setSuspendMessage('Gagal suspend: ' + (err.message || 'Unknown error'));
@@ -61,9 +61,9 @@ export default function AdminDashboard({ user, onLogout }) {
     };
 
     const renderHeader = () => (
-        <View style={{ padding: 16, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', borderBottomWidth: 1, borderBottomColor: '#2563eb' }}>
+        <View style={{ padding: 16, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', borderBottomWidth: 1, borderBottomColor: '#2563eb',  backgroundColor: '#facc15'}}>
             <View>
-                <Text style={{ fontSize: 16, fontWeight: '700', color: '#ffffff' }}>Admin Dashboard</Text>
+                <Text style={{ fontSize: 16, fontWeight: '700', color: '#070707', marginTop: 20, }}>Admin Dashboard</Text>
                 <Text style={{ fontSize: 12, color: '#bfdbfe', marginTop: 2 }}>{email}</Text>
             </View>
             <TouchableOpacity style={{ backgroundColor: '#dbeafe', paddingHorizontal: 12, paddingVertical: 8, borderRadius: 6 }} onPress={onLogout}>
@@ -82,9 +82,11 @@ export default function AdminDashboard({ user, onLogout }) {
     );
 
     const renderGrid = () => (
-        <View style={{ padding: 16, alignItems: 'center' }}>
-            <View style={{ width: 280, height: 280, borderRadius: 25, backgroundColor: '#ffffff', padding: 16, justifyContent: 'center', borderWidth: 1, borderColor: '#bfdbfe' }}>
-            <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 12, justifyContent: 'center' }}>
+        <View style={{ padding: 16, alignItems: 'center'  }}>
+            <View style={{ width: 280, height: 280, borderRadius: 25, backgroundColor: '#ffffff', padding: 16, justifyContent: 'center', borderWidth: 1, borderColor: '#bfdbfe', width: '100%' }}>
+           
+            </View>
+            <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 12, justifyContent: 'center' , marginTop: 24 }}>
                 <TouchableOpacity
                     style={{ flex: 1, minWidth: '45%', backgroundColor: '#facc15', borderRadius: 12, padding: 20, alignItems: 'center', gap: 8, borderWidth: 1, borderColor: '#eab308' }}
                     onPress={openSuspendModal}
@@ -108,7 +110,6 @@ export default function AdminDashboard({ user, onLogout }) {
                     <Text style={{ fontSize: 28 }}>📦</Text>
                     <Text style={{ color: '#1e3a8a', fontSize: 13, fontWeight: '700' }}>List Container</Text>
                 </TouchableOpacity>
-            </View>
             </View>
         </View>
     );
