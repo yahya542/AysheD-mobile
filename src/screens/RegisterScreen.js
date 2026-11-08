@@ -12,7 +12,7 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import { auth } from "../services/auth";
 
-export default function RegisterScreen({ onBack }) {
+export default function RegisterScreen({ onBack, onRegister }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [fullName, setFullName] = useState("");

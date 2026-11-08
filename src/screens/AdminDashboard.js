@@ -102,14 +102,15 @@ export default function AdminDashboard({ user, onLogout }) {
                     <Text style={{ fontSize: 28 }}>👥</Text>
                     <Text style={{ color: '#1e3a8a', fontSize: 13, fontWeight: '700' }}>List User</Text>
                 </TouchableOpacity>
-
-                <TouchableOpacity
+                 <TouchableOpacity
                     style={{ flex: 1, minWidth: '45%', backgroundColor: '#facc15', borderRadius: 12, padding: 20, alignItems: 'center', gap: 8, borderWidth: 1, borderColor: '#eab308' }}
-                    onPress={() => setView('listContainer')}
+                    onPress={() => { setView('listUser'); loadListUsers(); }}
                 >
-                    <Text style={{ fontSize: 28 }}>📦</Text>
-                    <Text style={{ color: '#1e3a8a', fontSize: 13, fontWeight: '700' }}>List Container</Text>
+                    <Text style={{ fontSize: 28 }}>👥</Text>
+                    <Text style={{ color: '#1e3a8a', fontSize: 13, fontWeight: '700' }}>Pantau Log</Text>
                 </TouchableOpacity>
+
+                
             </View>
         </View>
     );
@@ -134,17 +135,7 @@ export default function AdminDashboard({ user, onLogout }) {
         </View>
     );
 
-    const renderListContainer = () => (
-        <View style={{ flex: 1 }}>
-            {renderBackButton()}
-            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', padding: 24 }}>
-                <Text style={{ fontSize: 14, color: '#bfdbfe', textAlign: 'center' }}>
-                    Fitur List Container sedang dalam pengembangan.
-                </Text>
-            </View>
-        </View>
-    );
-
+    
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: '#1e3a8a' }}>
             {renderHeader()}

@@ -136,7 +136,7 @@ export default function LoginScreen({ onLogin, onRegister }) {
             </TouchableOpacity>
 
             <View style={s.serverStatus}>
-              <TouchableOpacity onPress={onRegister}>
+              <TouchableOpacity onPress={onRegister} style={{ flexDirection: 'row', alignItems: 'center', gap: 4 }}>
               <Text> Belum punya akun ? </Text>
                 <Text style={s.linkText}>Registrasi di sini </Text>
               </TouchableOpacity>
