@@ -4,6 +4,7 @@ import { LineChart } from 'react-native-chart-kit';
 import { Dimensions } from 'react-native';
 import { auth } from '../services/auth';
 import UfwLogs from './Login-logs';
+import { blue } from 'react-native-reanimated/lib/typescript/Colors';
 
 export default function AdminDashboard({ user, onLogout }) {
     const email = user?.identifier || 'admin@ayshed.biz.id';
@@ -153,22 +154,22 @@ export default function AdminDashboard({ user, onLogout }) {
         </View>
             <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 12, justifyContent: 'center' , marginTop: 24 }}>
                 <TouchableOpacity
-                    style={{ flex: 1, minWidth: '45%', backgroundColor: '#facc15', borderRadius: 12, padding: 20, alignItems: 'center', gap: 8, borderWidth: 1, borderColor: '#eab308' }}
+                    style={{ flex: 1, minWidth: '45%', backgroundColor: '#facc15', borderRadius: 12, padding: 20, alignItems: 'center', gap: 8, borderWidth: 6, borderColor: '#fbfaf6' }}
                     onPress={openSuspendModal}
                 >
-                    <Image source={require('../../assets/images/menu/suspend.png')} style={{ width: 28, height: 28 }} />
+                    <Image source={require('../../assets/images/menu/suspend.png')} style={{ width: 28, height: 28, tintColor: '#2563eb' }} />
                     <Text style={{ color: '#1e3a8a', fontSize: 13, fontWeight: '700' }}>Suspend</Text>
                 </TouchableOpacity>
 
                 <TouchableOpacity
-                    style={{ flex: 1, minWidth: '45%', backgroundColor: '#facc15', borderRadius: 12, padding: 20, alignItems: 'center', gap: 8, borderWidth: 1, borderColor: '#eab308' }}
+                    style={{ flex: 1, minWidth: '45%', backgroundColor: '#facc15', borderRadius: 12, padding: 20, alignItems: 'center', gap: 8, borderWidth: 6, borderColor: '#f8f7f4' }}
                     onPress={() => { setView('listUser'); loadListUsers(); }}
                 >
                     <Text style={{ fontSize: 28 }}>👥</Text>
                     <Text style={{ color: '#1e3a8a', fontSize: 13, fontWeight: '700' }}>List User</Text>
                 </TouchableOpacity>
                  <TouchableOpacity
-                    style={{ flex: 1, minWidth: '45%', backgroundColor: '#facc15', borderRadius: 12, padding: 20, alignItems: 'center', gap: 8, borderWidth: 1, borderColor: '#eab308' }}
+                    style={{ flex: 1, minWidth: '45%', backgroundColor: '#facc15', borderRadius: 12, padding: 20, alignItems: 'center', gap: 8, borderWidth: 6, borderColor: '#faf8f4' }}
                     onPress={() => setView('logs')}>
                         <Text style={{ fontSize: 28 }}>📜</Text  >
                     <Text style={{ color: '#1e3a8a', fontSize: 13, fontWeight: '700' }}>Pantau Logs</Text>
