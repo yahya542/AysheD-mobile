@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, ScrollView, TouchableOpacity, SafeAreaView, Modal, ActivityIndicator } from 'react-native';
 import { auth } from '../services/auth';
+import UfwLogs from './Login-logs';
 
 export default function AdminDashboard({ user, onLogout }) {
     const email = user?.identifier || 'admin@ayshed.biz.id';
@@ -104,10 +105,7 @@ export default function AdminDashboard({ user, onLogout }) {
                 </TouchableOpacity>
                  <TouchableOpacity
                     style={{ flex: 1, minWidth: '45%', backgroundColor: '#facc15', borderRadius: 12, padding: 20, alignItems: 'center', gap: 8, borderWidth: 1, borderColor: '#eab308' }}
-                    onPress={() => { setView('listUser'); loadListUsers(); }}
-                >
-                    <Text style={{ fontSize: 28 }}>👥</Text>
-                    <Text style={{ color: '#1e3a8a', fontSize: 13, fontWeight: '700' }}>Pantau Log</Text>
+                    onPress={() => setView('logs')}</Text>
                 </TouchableOpacity>
 
                 
@@ -145,6 +143,7 @@ export default function AdminDashboard({ user, onLogout }) {
                 </ScrollView>
             )}
             {view === 'listUser' && renderListUser()}
+            {view === 'logs' && <UfwLogs onBack={() => setView('dashboard')} />}
             {view === 'listContainer' && renderListContainer()}
 
             {/* Suspend Modal */}

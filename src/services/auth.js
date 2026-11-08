@@ -91,7 +91,11 @@ async function restoreSession() {
   }
 }
 
-async function getUsers() {
+async function getUfwLogs() {
+  const token = await getToken();
+  if (!token) throw new Error('No token found');
+  return authApi.ufwLogs(token);
+}
   const token = await getToken();
   if (!token) {
     throw new Error('No token found');
@@ -130,6 +134,7 @@ export const auth = {
   logout,
   restoreSession,
   getLoginLogs,
-  getUsers,
-  suspendUser,
+    getUsers,
+    getUfwLogs,
+    suspendUser,
 };
