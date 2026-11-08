@@ -20,6 +20,7 @@ export default function AdminDashboard({ user, onLogout }) {
     const [listUsers, setListUsers] = useState([]);
     const [listUsersLoading, setListUsersLoading] = useState(false);
     const [chartData, setChartData] = useState({ daily: [], weekly: [], monthly: [] });
+    const [chartRange, setChartRange] = useState('daily');
 
     useEffect(() => {
         (async () => {
@@ -98,10 +99,17 @@ export default function AdminDashboard({ user, onLogout }) {
     const renderGrid = () => (
         <View style={{ padding: 16, alignItems: 'center'  }}>
         <View style={{ width: '100%', backgroundColor: '#ffffff', padding: 16, borderRadius: 12, borderWidth: 1, borderColor: '#bfdbfe' }}>
-            <Text style={{ color: '#1e3a8a', fontWeight: '700', marginBottom: 8 }}>Grafik Login (Kemarin)</Text>
+            <Text style={{ color: '#1e3a8a', fontWeight: '700', marginBottom: 8 }}>Grafik Login</Text>
+            <View style={{ flexDirection: 'row', gap: 8, marginBottom: 8 }}>
+                {['daily','weekly','monthly'].map(r => (
+                    <TouchableOpacity key={r} onPress={() => setChartRange(r)} style={{ padding: 6, backgroundColor: chartRange===r?'#facc15':'#dbeafe', borderRadius: 6 }}>
+                        <Text style={{ color: '#1e3a8a', fontSize: 11, fontWeight: '700' }}>{r}</Text>
+                    </TouchableOpacity>
+                ))}
+            </View>
             <View style={{ flexDirection: 'row', alignItems: 'flex-end', gap: 4, height: 120 }}>
                 {(() => {
-                    const data = (chartData.daily && chartData.daily.length) ? chartData.daily : (chartData.weekly || []);
+                    const data = chartData[chartRange] || [];
                     const max = Math.max(1, ...data.map(x => x.y || 0));
                     return data.slice(0, 12).map((d, i) => {
                         const h = ((d.y || 0) / max) * 100;
