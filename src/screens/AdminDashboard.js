@@ -25,8 +25,11 @@ export default function AdminDashboard({ user, onLogout }) {
         (async () => {
             try {
                 const data = await auth.getChartSummary();
+                console.log('CHART DATA', data);
                 setChartData(data || { daily: [], weekly: [], monthly: [] });
-            } catch {}
+            } catch (e) {
+                console.log('CHART ERR', e.message);
+            }
         })();
     }, []);
 
