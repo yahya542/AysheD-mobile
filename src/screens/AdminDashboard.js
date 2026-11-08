@@ -97,11 +97,14 @@ export default function AdminDashboard({ user, onLogout }) {
         <View style={{ width: '100%', backgroundColor: '#ffffff', padding: 16, borderRadius: 12, borderWidth: 1, borderColor: '#bfdbfe' }}>
             <Text style={{ color: '#1e3a8a', fontWeight: '700', marginBottom: 8 }}>Grafik Login (Kemarin)</Text>
             <View style={{ flexDirection: 'row', alignItems: 'flex-end', gap: 4, height: 120 }}>
-                {(chartData.daily || []).slice(0, 12).map((d, i) => {
-                    const max = Math.max(1, ...(chartData.daily || []).map(x => x.y || 0));
-                    const h = ((d.y || 0) / max) * 100;
-                    return <View key={i} style={{ flex: 1, height: `${h}%`, backgroundColor: '#facc15', borderRadius: 4 }} />;
-                })}
+                {(() => {
+                    const data = (chartData.daily && chartData.daily.length) ? chartData.daily : (chartData.weekly || []);
+                    const max = Math.max(1, ...data.map(x => x.y || 0));
+                    return data.slice(0, 12).map((d, i) => {
+                        const h = ((d.y || 0) / max) * 100;
+                        return <View key={i} style={{ flex: 1, height: `${h}%`, backgroundColor: '#facc15', borderRadius: 4 }} />;
+                    });
+                })()}
             </View>
         </View>
             <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 12, justifyContent: 'center' , marginTop: 24 }}>
