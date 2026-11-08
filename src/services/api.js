@@ -40,6 +40,7 @@ async function request(baseUrl, path, options = {}) {
   }
 
   if (!response.ok) {
+    console.error('API ERROR', url, response.status, responseText);
     const message = data?.detail || 'Request failed';
     throw new Error(
       Array.isArray(message)
