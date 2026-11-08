@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, ScrollView, TouchableOpacity, SafeAreaView, Modal, ActivityIndicator } from 'react-native';
+import { View, Text, ScrollView, TouchableOpacity, SafeAreaView, Modal, ActivityIndicator, Image } from 'react-native';
 import { LineChart } from 'react-native-chart-kit';
 import { Dimensions } from 'react-native';
 import { auth } from '../services/auth';
@@ -156,7 +156,7 @@ export default function AdminDashboard({ user, onLogout }) {
                     style={{ flex: 1, minWidth: '45%', backgroundColor: '#facc15', borderRadius: 12, padding: 20, alignItems: 'center', gap: 8, borderWidth: 1, borderColor: '#eab308' }}
                     onPress={openSuspendModal}
                 >
-                    <Text style={{ fontSize: 28 }}>🚫</Text>
+                    <Image source={require('../assets/images/menu/suspend.png')} style={{ width: 28, height: 28 }} />
                     <Text style={{ color: '#1e3a8a', fontSize: 13, fontWeight: '700' }}>Suspend</Text>
                 </TouchableOpacity>
 
