@@ -105,7 +105,7 @@ export default function AdminDashboard({ user, onLogout }) {
                 </TouchableOpacity>
                  <TouchableOpacity
                     style={{ flex: 1, minWidth: '45%', backgroundColor: '#facc15', borderRadius: 12, padding: 20, alignItems: 'center', gap: 8, borderWidth: 1, borderColor: '#eab308' }}
-                    onPress={() => setView('logs')}</Text>
+                    onPress={() => setView('logs')}
                 </TouchableOpacity>
 
                 
