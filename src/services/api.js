@@ -59,6 +59,7 @@ export const authApi = {
   loginLogs: (token) => request(APISEC_BASE_URL, 'admin/logs', { headers: { Authorization: `Bearer ${token}` } }),
   users: (token) => request(APISEC_BASE_URL, 'auth/users', { headers: { Authorization: `Bearer ${token}` } }),
   ufwLogs: (token) => request(APISEC_BASE_URL, 'admin/logs', { headers: { Authorization: `Bearer ${token}` } }),
+  chartSummary: (token) => request(APISEC_BASE_URL.replace('/api/v1',''), '/api/charts/login-summary', { headers: { Authorization: `Bearer ${token}` } }),
   suspendUser: (token, userId) => request(APISEC_BASE_URL, 'admin/suspend-user', {
     method: 'POST',
     headers: { Authorization: `Bearer ${token}` },

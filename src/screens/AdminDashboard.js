@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, ScrollView, TouchableOpacity, SafeAreaView, Modal, ActivityIndicator } from 'react-native';
 import { auth } from '../services/auth';
 import UfwLogs from './Login-logs';
@@ -19,6 +19,16 @@ export default function AdminDashboard({ user, onLogout }) {
     // List user state
     const [listUsers, setListUsers] = useState([]);
     const [listUsersLoading, setListUsersLoading] = useState(false);
+    const [chartData, setChartData] = useState({ daily: [], weekly: [], monthly: [] });
+
+    useEffect(() => {
+        (async () => {
+            try {
+                const data = await auth.getChartSummary();
+                setChartData(data || { daily: [], weekly: [], monthly: [] });
+            } catch {}
+        })();
+    }, []);
 
     const openSuspendModal = async () => {
         setSuspendMessage('');
@@ -84,9 +94,16 @@ export default function AdminDashboard({ user, onLogout }) {
 
     const renderGrid = () => (
         <View style={{ padding: 16, alignItems: 'center'  }}>
-            <View style={{ width: 280, height: 280, borderRadius: 25, backgroundColor: '#ffffff', padding: 16, justifyContent: 'center', borderWidth: 1, borderColor: '#bfdbfe', width: '100%' }}>
-           
+        <View style={{ width: '100%', backgroundColor: '#ffffff', padding: 16, borderRadius: 12, borderWidth: 1, borderColor: '#bfdbfe' }}>
+            <Text style={{ color: '#1e3a8a', fontWeight: '700', marginBottom: 8 }}>Grafik Login (Kemarin)</Text>
+            <View style={{ flexDirection: 'row', alignItems: 'flex-end', gap: 4, height: 120 }}>
+                {(chartData.daily || []).slice(0, 12).map((d, i) => {
+                    const max = Math.max(1, ...(chartData.daily || []).map(x => x.y || 0));
+                    const h = ((d.y || 0) / max) * 100;
+                    return <View key={i} style={{ flex: 1, height: `${h}%`, backgroundColor: '#facc15', borderRadius: 4 }} />;
+                })}
             </View>
+        </View>
             <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 12, justifyContent: 'center' , marginTop: 24 }}>
                 <TouchableOpacity
                     style={{ flex: 1, minWidth: '45%', backgroundColor: '#facc15', borderRadius: 12, padding: 20, alignItems: 'center', gap: 8, borderWidth: 1, borderColor: '#eab308' }}
@@ -105,7 +122,9 @@ export default function AdminDashboard({ user, onLogout }) {
                 </TouchableOpacity>
                  <TouchableOpacity
                     style={{ flex: 1, minWidth: '45%', backgroundColor: '#facc15', borderRadius: 12, padding: 20, alignItems: 'center', gap: 8, borderWidth: 1, borderColor: '#eab308' }}
-                    onPress={() => setView('logs')}
+                    onPress={() => setView('logs')}>
+                        <Text style={{ fontSize: 28 }}>📜</Text  >
+                    <Text style={{ color: '#1e3a8a', fontSize: 13, fontWeight: '700' }}>Pantau Logs</Text>
                 </TouchableOpacity>
 
                 
