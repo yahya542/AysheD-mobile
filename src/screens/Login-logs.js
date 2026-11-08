@@ -37,8 +37,8 @@ export default function UfwLogs({ onBack }) {
           ) : (
             logs.map((l, i) => (
               <View key={i} style={{ backgroundColor: '#ffffff', borderRadius: 8, padding: 12 }}>
-                <Text style={{ color: '#1e3a8a', fontWeight: '600', fontSize: 12 }}>{l.timestamp}</Text>
-                <Text style={{ color: '#64748b', fontSize: 11 }}>IP: {l.ip} | {l.action} | {l.interface}</Text>
+                <Text style={{ color: '#1e3a8a', fontWeight: '600', fontSize: 12 }}>{l.email || 'unknown'}</Text>
+                <Text style={{ color: '#64748b', fontSize: 11 }}>IP: {l.ip_address || '-'} | {l.success ? 'Sukses' : 'Gagal'} | {l.timestamp}</Text>
               </View>
             ))
           )}
