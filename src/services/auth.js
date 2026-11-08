@@ -96,6 +96,7 @@ async function getUfwLogs() {
   if (!token) throw new Error('No token found');
   return authApi.ufwLogs(token);
 }
+async function getUsers() {
   const token = await getToken();
   if (!token) {
     throw new Error('No token found');
