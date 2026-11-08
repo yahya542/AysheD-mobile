@@ -23,12 +23,13 @@ async function request(baseUrl, path, options = {}) {
   const cleanPath = path.startsWith('/') ? path.slice(1) : path;
   const url = `${baseUrl}${cleanPath}`;
   
+  const { headers: optionHeaders, ...restOptions } = options;
   const response = await fetch(url, {
     headers: {
       'Content-Type': 'application/json',
-      ...options.headers,
+      ...optionHeaders,
     },
-    ...options,
+    ...restOptions,
   });
 
   const responseText = await response.text();
