@@ -106,6 +106,7 @@ async function unsuspendUser(userId) {
   if (!token) throw new Error('No token found');
   return authApi.unsuspendUser(token, userId);
 }
+async function getUsers() {
   const token = await getToken();
   if (!token) {
     throw new Error('No token found');
