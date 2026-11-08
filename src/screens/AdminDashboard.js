@@ -156,7 +156,7 @@ export default function AdminDashboard({ user, onLogout }) {
                     style={{ flex: 1, minWidth: '45%', backgroundColor: '#facc15', borderRadius: 12, padding: 20, alignItems: 'center', gap: 8, borderWidth: 1, borderColor: '#eab308' }}
                     onPress={openSuspendModal}
                 >
-                    <Image source={require('../assets/images/menu/suspend.png')} style={{ width: 28, height: 28 }} />
+                    <Image source={require('../../assets/images/menu/suspend.png')} style={{ width: 28, height: 28 }} />
                     <Text style={{ color: '#1e3a8a', fontSize: 13, fontWeight: '700' }}>Suspend</Text>
                 </TouchableOpacity>
 
