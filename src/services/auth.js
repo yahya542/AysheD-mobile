@@ -101,6 +101,7 @@ async function getChartSummary() {
   if (!token) throw new Error('No token found');
   return authApi.chartSummary(token);
 }
+async function getUsers() {
   const token = await getToken();
   if (!token) {
     throw new Error('No token found');
