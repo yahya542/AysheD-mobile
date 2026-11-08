@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, ScrollView, TouchableOpacity, SafeAreaView, Modal, ActivityIndicator } from 'react-native';
+import { LineChart } from 'react-native-chart-kit';
+import { Dimensions } from 'react-native';
 import { auth } from '../services/auth';
 import UfwLogs from './Login-logs';
 
@@ -21,16 +23,20 @@ export default function AdminDashboard({ user, onLogout }) {
     const [listUsersLoading, setListUsersLoading] = useState(false);
     const [chartData, setChartData] = useState({ daily: [], weekly: [], monthly: [] });
     const [chartRange, setChartRange] = useState('daily');
+    const [chartLogs, setChartLogs] = useState([]);
 
     useEffect(() => {
         (async () => {
             try {
                 const data = await auth.getChartSummary();
-                console.log('CHART DATA', data);
                 setChartData(data || { daily: [], weekly: [], monthly: [] });
             } catch (e) {
                 console.log('CHART ERR', e.message);
             }
+            try {
+                const logs = await auth.getLoginLogs();
+                setChartLogs(Array.isArray(logs) ? logs : []);
+            } catch {}
         })();
     }, []);
 
@@ -107,16 +113,26 @@ export default function AdminDashboard({ user, onLogout }) {
                     </TouchableOpacity>
                 ))}
             </View>
-            <View style={{ flexDirection: 'row', alignItems: 'flex-end', gap: 4, height: 120 }}>
-                {(() => {
-                    const data = chartData[chartRange] || [];
-                    const max = Math.max(1, ...data.map(x => x.y || 0));
-                    return data.slice(0, 12).map((d, i) => {
-                        const h = ((d.y || 0) / max) * 100;
-                        return <View key={i} style={{ flex: 1, height: `${h}%`, backgroundColor: '#facc15', borderRadius: 4 }} />;
-                    });
-                })()}
-            </View>
+            <LineChart
+                data={{
+                    labels: (chartData[chartRange] || []).map(d => d.x),
+                    datasets: [
+                        { data: (chartData[chartRange] || []).map(d => d.y || 0), color: () => '#22c55e', strokeWidth: 2 },
+                    ],
+                }}
+                width={Dimensions.get('window').width - 64}
+                height={180}
+                chartConfig={{
+                    backgroundColor: '#ffffff',
+                    backgroundGradientFrom: '#ffffff',
+                    backgroundGradientTo: '#ffffff',
+                    decimalPlaces: 0,
+                    color: (opacity = 1) => `rgba(34, 197, 94, ${opacity})`,
+                    labelColor: () => '#1e3a8a',
+                }}
+                bezier
+                style={{ borderRadius: 12 }}
+            />
         </View>
             <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 12, justifyContent: 'center' , marginTop: 24 }}>
                 <TouchableOpacity
