@@ -85,6 +85,7 @@ export default function AdminDashboard({ user, onLogout }) {
             setSuspendLoading(false);
         }
     };
+    const loadListUsers = async () => {
         setListUsersLoading(true);
         try {
             const users = await auth.getUsers();
