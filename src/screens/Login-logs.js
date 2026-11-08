@@ -25,7 +25,7 @@ export default function UfwLogs({ onBack }) {
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: '#1e3a8a' }}>
       <View style={{ padding: 16, flexDirection: 'row', justifyContent: 'space-between' }}>
-        <Text style={{ color: '#facc15', fontSize: 16, fontWeight: '700' }}>UFW Logs</Text>
+        <Text style={{ color: '#facc15', fontSize: 16, fontWeight: '700' }}>Login Logs</Text>
         {onBack ? <Text style={{ color: '#bfdbfe' }} onPress={onBack}>Kembali</Text> : null}
       </View>
       {loading ? (
@@ -36,9 +36,9 @@ export default function UfwLogs({ onBack }) {
             <Text style={{ color: '#bfdbfe', textAlign: 'center' }}>Tidak ada log</Text>
           ) : (
             logs.map((l, i) => (
-              <View key={i} style={{ backgroundColor: '#ffffff', borderRadius: 8, padding: 12 }}>
+              <View key={i} style={{ backgroundColor: l.success ? '#facc15' : '#ef4444', borderRadius: 8, padding: 12 }}>
                 <Text style={{ color: '#1e3a8a', fontWeight: '600', fontSize: 12 }}>{l.email || 'unknown'}</Text>
-                <Text style={{ color: '#64748b', fontSize: 11 }}>IP: {l.ip_address || '-'} | {l.success ? 'Sukses' : 'Gagal'} | {l.timestamp}</Text>
+                <Text style={{ color: l.success ? '#1e3a8a' : '#ffffff', fontSize: 11 }}>IP: {l.ip_address || '-'} | {l.success ? 'Sukses' : 'Gagal'} | {l.timestamp}</Text>
               </View>
             ))
           )}
