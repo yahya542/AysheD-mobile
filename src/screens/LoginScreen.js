@@ -13,7 +13,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { C, s } from './styles/loginScreenStyles';
 import { auth } from '../services/auth';
 
-export default function LoginScreen({ onLogin }) {
+export default function LoginScreen({ onLogin, onRegister }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -136,6 +136,11 @@ export default function LoginScreen({ onLogin }) {
             </TouchableOpacity>
 
             <View style={s.serverStatus}>
+              <TouchableOpacity onPress={onRegister}>
+              <Text> Belum punya akun ? </Text>
+                <Text style={s.linkText}>Registrasi di sini </Text>
+              </TouchableOpacity>
+              
              {/*  <View
                 style={{
                   width: 8,
@@ -148,6 +153,8 @@ export default function LoginScreen({ onLogin }) {
                 Gateway Server Aktif • Latensi 14ms
               </Text> */}
             </View>
+          
+            
           </View>
         </View>
       </KeyboardAvoidingView>
