@@ -12,7 +12,7 @@ export default function UfwLogs({ onBack }) {
     try {
       const res = await auth.getUfwLogs();
       const arr = Array.isArray(res?.logs) ? res.logs : Array.isArray(res) ? res : [];
-      setLogs(arr.slice(Math.max(0, arr.length - 25)));
+      setLogs(arr.slice(0, 25));
     } catch {
       setLogs([]);
     } finally {
