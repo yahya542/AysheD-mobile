@@ -133,7 +133,8 @@ export default function AdminDashboard({ user, onLogout }) {
                 data={{
                     labels: (chartData[chartRange] || []).map(d => d.x),
                     datasets: [
-                        { data: (chartData[chartRange] || []).map(d => d.y || 0), color: () => '#22c55e', strokeWidth: 2 },
+                        { data: (chartData[chartRange] || []).map(d => d.success || 0), color: () => '#22c55e', strokeWidth: 2 },
+                        { data: (chartData[chartRange] || []).map(d => d.fail || 0), color: () => '#ef4444', strokeWidth: 2 },
                     ],
                 }}
                 width={Dimensions.get('window').width - 64}
