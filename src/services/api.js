@@ -65,6 +65,11 @@ export const authApi = {
     headers: { Authorization: `Bearer ${token}` },
     body: JSON.stringify({ user_id: userId }),
   }),
+  unsuspendUser: (token, userId) => request(APISEC_BASE_URL, 'admin/unsuspend-user', {
+    method: 'POST',
+    headers: { Authorization: `Bearer ${token}` },
+    body: JSON.stringify({ user_id: userId }),
+  }),
 };
 
 export const apiBe = {

@@ -101,7 +101,11 @@ async function getChartSummary() {
   if (!token) throw new Error('No token found');
   return authApi.chartSummary(token);
 }
-async function getUsers() {
+async function unsuspendUser(userId) {
+  const token = await getToken();
+  if (!token) throw new Error('No token found');
+  return authApi.unsuspendUser(token, userId);
+}
   const token = await getToken();
   if (!token) {
     throw new Error('No token found');
@@ -141,6 +145,7 @@ export const auth = {
   restoreSession,
   getLoginLogs,
     getUsers,
+    unsuspendUser,
     getChartSummary,
     getUfwLogs,
     suspendUser,

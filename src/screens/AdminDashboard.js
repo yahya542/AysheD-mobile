@@ -69,7 +69,22 @@ export default function AdminDashboard({ user, onLogout }) {
         }
     };
 
-    const loadListUsers = async () => {
+    const handleUnsuspend = async () => {
+        if (!selectedUserId) {
+            setSuspendMessage('Pilih user terlebih dahulu');
+            return;
+        }
+        setSuspendLoading(true);
+        setSuspendMessage('');
+        try {
+            const result = await auth.unsuspendUser(String(selectedUserId));
+            setSuspendMessage(result?.message || 'User berhasil diaktifkan');
+        } catch (err) {
+            setSuspendMessage('Gagal aktifkan: ' + (err.message || 'Unknown error'));
+        } finally {
+            setSuspendLoading(false);
+        }
+    };
         setListUsersLoading(true);
         try {
             const users = await auth.getUsers();
@@ -85,10 +100,10 @@ export default function AdminDashboard({ user, onLogout }) {
         <View style={{ padding: 16, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', borderBottomWidth: 1, borderBottomColor: '#2563eb',  backgroundColor: '#facc15'}}>
             <View>
                 <Text style={{ fontSize: 16, fontWeight: '700', color: '#070707', marginTop: 20, }}>Admin Dashboard</Text>
-                <Text style={{ fontSize: 12, color: '#bfdbfe', marginTop: 2 }}>{email}</Text>
+                <Text style={{ fontSize: 12, color: '#fcfdff', marginTop: 2 }}>{email}</Text>
             </View>
-            <TouchableOpacity style={{ backgroundColor: '#dbeafe', paddingHorizontal: 12, paddingVertical: 8, borderRadius: 6 }} onPress={onLogout}>
-                <Text style={{ color: '#facc15', fontSize: 12, fontWeight: '700' }}>KELUAR</Text>
+            <TouchableOpacity style={{ backgroundColor: '#ec0a0a', paddingHorizontal: 12, paddingVertical: 8, borderRadius: 6 }} onPress={onLogout}>
+                <Text style={{ color: '#f3f0e5', fontSize: 12, fontWeight: '700' }}>KELUAR</Text>
             </TouchableOpacity>
         </View>
     );
@@ -242,6 +257,13 @@ export default function AdminDashboard({ user, onLogout }) {
                                 onPress={() => setSuspendModalVisible(false)}
                             >
                                 <Text style={{ color: '#1e3a8a', fontWeight: '600' }}>Batal</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity
+                                style={{ flex: 1, padding: 12, borderRadius: 8, backgroundColor: '#22c55e', alignItems: 'center', opacity: suspendLoading ? 0.5 : 1 }}
+                                onPress={handleUnsuspend}
+                                disabled={suspendLoading}
+                            >
+                                <Text style={{ color: '#ffffff', fontWeight: '700' }}>Aktifkan</Text>
                             </TouchableOpacity>
                             <TouchableOpacity
                                 style={{ flex: 1, padding: 12, borderRadius: 8, backgroundColor: '#ef4444', alignItems: 'center', opacity: suspendLoading ? 0.5 : 1 }}
