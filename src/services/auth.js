@@ -1,23 +1,36 @@
 import * as SecureStore from 'expo-secure-store';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { authApi } from './api';
 
 const TOKEN_KEY = 'ayshed_access_token';
 const USER_KEY = 'ayshed_user';
 
+// Gunakan AsyncStorage untuk development (Expo Go), SecureStore untuk production build
+const USE_SECURE_STORE = false;
+
 async function getToken() {
-  return SecureStore.getItemAsync(TOKEN_KEY);
+  if (USE_SECURE_STORE) {
+    return SecureStore.getItemAsync(TOKEN_KEY);
+  }
+  return AsyncStorage.getItem(TOKEN_KEY);
 }
 
 async function setToken(token) {
-  await SecureStore.setItemAsync(TOKEN_KEY, token);
+  if (USE_SECURE_STORE) {
+    return SecureStore.setItemAsync(TOKEN_KEY, token);
+  }
+  return AsyncStorage.setItem(TOKEN_KEY, token);
 }
 
 async function removeToken() {
-  await SecureStore.deleteItemAsync(TOKEN_KEY);
+  if (USE_SECURE_STORE) {
+    return SecureStore.deleteItemAsync(TOKEN_KEY);
+  }
+  return AsyncStorage.removeItem(TOKEN_KEY);
 }
 
 async function getUser() {
-  const raw = await SecureStore.getItemAsync(USER_KEY);
+  const raw = await AsyncStorage.getItem(USER_KEY);
   if (!raw) return null;
   try {
     return JSON.parse(raw);
@@ -27,11 +40,11 @@ async function getUser() {
 }
 
 async function setUser(user) {
-  await SecureStore.setItemAsync(USER_KEY, JSON.stringify(user));
+  return AsyncStorage.setItem(USER_KEY, JSON.stringify(user));
 }
 
 async function removeUser() {
-  await SecureStore.deleteItemAsync(USER_KEY);
+  return AsyncStorage.removeItem(USER_KEY);
 }
 
 async function login({ email, password }) {
