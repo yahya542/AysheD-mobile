@@ -111,6 +111,17 @@ export default function AdminDashboard({ user, onLogout }) {
       setListUsersLoading(false);
     }
   };
+  const deleteUsers = async (userId) => {
+    try {
+      const result = await auth.deleteUser(userId);
+      console.log("DELETE RESULT", result);
+      alert(result?.message || "User berhasil dihapus");
+      loadListUsers(); // Refresh the list after deletion
+    } catch (err) {
+      console.log("DELETE ERROR", err.message);
+      alert("Gagal hapus user: " + (err.message || "Unknown error"));
+    }
+  };
 
   const renderHeader = () => (
     <View
@@ -342,9 +353,23 @@ export default function AdminDashboard({ user, onLogout }) {
               >
                 {u.email}
               </Text>
-              <Text style={{ color: "#bfdbfe", fontSize: 11, marginTop: 2 }}>
+              <Text style={{ color: "#359107", fontSize: 11, marginTop: 2 }}>
                 Role: {u.role} | Status: {u.is_active ? "Aktif" : "Suspended"}
               </Text>
+              <TouchableOpacity
+                style={{
+                  marginTop: 8,
+                  backgroundColor: "#ef4444",
+                  paddingVertical: 6,
+                  borderRadius: 6,
+                  alignItems: "center",
+                }}
+                onPress={() => deleteUsers(u.id)}
+              >
+                <Text style={{ color: "#f3f0e5", fontSize: 12, fontWeight: "700" }}>
+                  HAPUS USER
+                </Text>
+              </TouchableOpacity> 
             </View>
           ))
         )}
