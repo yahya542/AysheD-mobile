@@ -124,6 +124,7 @@ async function deleteUser(userId) {
   if (!token) throw new Error('No token found');
   return authApi.deleteUser(token, userId);
 }
+async function getUsers() {
   const token = await getToken();
   if (!token) {
     throw new Error('No token found');
