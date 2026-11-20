@@ -72,6 +72,11 @@ export const authApi = {
     headers: { Authorization: `Bearer ${token}` },
     body: JSON.stringify({ user_id: userId }),
   }),
+  deleteUser: (token, userId) => request(APISEC_BASE_URL, 'admin/delete-user', {
+    method: 'DELETE',
+    headers: { Authorization: `Bearer ${token}` },
+    body: JSON.stringify({ user_id: userId }),
+  }),
 };
 
 export const apiBe = {

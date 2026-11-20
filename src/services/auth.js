@@ -119,7 +119,11 @@ async function unsuspendUser(userId) {
   if (!token) throw new Error('No token found');
   return authApi.unsuspendUser(token, userId);
 }
-async function getUsers() {
+async function deleteUser(userId) {
+  const token = await getToken();
+  if (!token) throw new Error('No token found');
+  return authApi.deleteUser(token, userId);
+}
   const token = await getToken();
   if (!token) {
     throw new Error('No token found');
@@ -159,6 +163,7 @@ export const auth = {
   restoreSession,
   getLoginLogs,
     getUsers,
+    deleteUser,
     unsuspendUser,
     getChartSummary,
     getUfwLogs,
