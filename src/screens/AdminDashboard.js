@@ -7,15 +7,17 @@ import {
   SafeAreaView,
   Modal,
   ActivityIndicator,
+  RefreshControl,
   Image,
 } from "react-native";
 import { LineChart } from "react-native-chart-kit";
 import { Dimensions } from "react-native";
 import { auth } from "../services/auth";
+import * as ScreenOrientation from "expo-screen-orientation";
 import UfwLogs from "./Login-logs";
 
 export default function AdminDashboard({ user, onLogout }) {
-  const email = user?.identifier || "admin@ayshed.biz.id";
+  const email = user?.identifier || "admin";
 
   // Navigation state: 'dashboard' | 'suspend' | 'listUser' | 'listContainer'
   const [view, setView] = useState("dashboard");
@@ -37,6 +39,39 @@ export default function AdminDashboard({ user, onLogout }) {
   });
   const [chartRange, setChartRange] = useState("daily");
   const [chartLogs, setChartLogs] = useState([]);
+  const [landscape, setLandscape] = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
+
+  const onRefresh = async () => {
+    setRefreshing(true);
+    try {
+      const data = await auth.getChartSummary();
+      setChartData(data || { daily: [], weekly: [], monthly: [] });
+    } catch (e) {
+      console.log("CHART ERR", e.message);
+    }
+    try {
+      const logs = await auth.getLoginLogs();
+      setChartLogs(Array.isArray(logs) ? logs : []);
+    } catch {}
+    setRefreshing(false);
+  };
+
+  useEffect(() => {
+    (async () => {
+      try {
+        if (landscape) {
+          await ScreenOrientation.lockAsync(
+            ScreenOrientation.OrientationLock.LANDSCAPE
+          );
+        } else {
+          await ScreenOrientation.lockAsync(
+            ScreenOrientation.OrientationLock.PORTRAIT_UP
+          );
+        }
+      } catch {}
+    })();
+  }, [landscape]);
 
   useEffect(() => {
     (async () => {
@@ -193,10 +228,99 @@ export default function AdminDashboard({ user, onLogout }) {
           borderWidth: 1,
           borderColor: "#bfdbfe",
         }}
-      >
-        <Text style={{ color: "#1e3a8a", fontWeight: "700", marginBottom: 8 }}>
-          Grafik Login
-        </Text>
+      > 
+        <View style={{ flexDirection: "row", gap: 10, marginBottom: 16 }}>
+          <View
+            style={{
+              flex: 1,
+              backgroundColor: "#8c18f1",
+              borderRadius: 12,
+              padding: 14,
+              alignItems: "center",
+            }}
+          >
+            <Text style={{ color: "#ffffff", fontSize: 11, fontWeight: "600" }}>
+              TOTAL LOGIN
+            </Text>
+            <Text
+              style={{
+                color: "#ffffff",
+                fontSize: 22,
+                fontWeight: "700",
+                marginTop: 4,
+              }}
+            >
+              {chartLogs.length}
+            </Text>
+          </View>
+          <View
+            style={{
+              flex: 1,
+              backgroundColor: "#22c55e",
+              borderRadius: 12,
+              padding: 14,
+              alignItems: "center",
+            }}
+          >
+            <Text style={{ color: "#ffffff", fontSize: 11, fontWeight: "600" }}>
+              LOGIN SUCCESS
+            </Text>
+            <Text
+              style={{
+                color: "#ffffff",
+                fontSize: 22,
+                fontWeight: "700",
+                marginTop: 4,
+              }}
+            >
+              {chartLogs.filter((log) => log.success).length}
+            </Text>
+          </View>
+          <View
+            style={{
+              flex: 1,
+              backgroundColor: "#ef4444",
+              borderRadius: 12,
+              padding: 14,
+              alignItems: "center",
+            }}
+          >
+            <Text style={{ color: "#ffffff", fontSize: 11, fontWeight: "600" }}>
+              LOGIN GAGAL
+            </Text>
+            <Text
+              style={{
+                color: "#ffffff",
+                fontSize: 22,
+                fontWeight: "700",
+                marginTop: 4,
+              }}
+            >
+              {chartLogs.filter((log) => !log.success).length}
+            </Text>
+          </View>
+        </View>
+          <Text style={{ color: "#1e3a8a", fontSize: 12, marginBottom: 4 }}>
+
+       </Text>
+        <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center", marginBottom: 8 }}>
+          <Text style={{ color: "#1e3a8a", fontWeight: "700", marginBottom: 8 }}>
+            Grafik Login
+          </Text>
+          <TouchableOpacity
+            onPress={() => setLandscape((v) => !v)}
+            style={{
+              paddingHorizontal: 10,
+              paddingVertical: 4,
+              backgroundColor: "#dbeafe",
+              borderRadius: 6,
+            }}
+          >
+            <Text style={{ color: "#1e3a8a", fontSize: 11, fontWeight: "700" }}>
+              {landscape ? "Potret" : "Landscape"}
+            </Text>
+          </TouchableOpacity>
+        </View>
         <View style={{ flexDirection: "row", gap: 8, marginBottom: 8 }}>
           {["daily", "weekly", "monthly"].map((r) => (
             <TouchableOpacity
@@ -216,35 +340,40 @@ export default function AdminDashboard({ user, onLogout }) {
             </TouchableOpacity>
           ))}
         </View>
-        <LineChart
-          data={{
-            labels: (chartData[chartRange] || []).map((d) => d.x),
-            datasets: [
-              {
-                data: (chartData[chartRange] || []).map((d) => d.success || 0),
-                color: () => "#22c55e",
-                strokeWidth: 2,
-              },
-              {
-                data: (chartData[chartRange] || []).map((d) => d.fail || 0),
-                color: () => "#ef4444",
-                strokeWidth: 2,
-              },
-            ],
-          }}
-          width={Dimensions.get("window").width - 64}
-          height={180}
-          chartConfig={{
-            backgroundColor: "#ffffff",
-            backgroundGradientFrom: "#ffffff",
-            backgroundGradientTo: "#ffffff",
-            decimalPlaces: 0,
-            color: (opacity = 1) => `rgba(34, 197, 94, ${opacity})`,
-            labelColor: () => "#1e3a8a",
-          }}
-          bezier
-          style={{ borderRadius: 12 }}
-        />
+        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+          <LineChart
+            data={{
+              labels: (chartData[chartRange] || []).map((d) => d.x),
+              datasets: [
+                {
+                  data: (chartData[chartRange] || []).map((d) => d.success || 0),
+                  color: () => "#22c55e",
+                  strokeWidth: 2,
+                },
+                {
+                  data: (chartData[chartRange] || []).map((d) => d.fail || 0),
+                  color: () => "#ef4444",
+                  strokeWidth: 2,
+                },
+              ],
+            }}
+            width={Math.max(
+              Dimensions.get("window").width - 64,
+              (chartData[chartRange] || []).length * 28
+            )}
+            height={180}
+            chartConfig={{
+              backgroundColor: "#ffffff",
+              backgroundGradientFrom: "#ffffff",
+              backgroundGradientTo: "#ffffff",
+              decimalPlaces: 0,
+              color: (opacity = 1) => `rgba(34, 197, 94, ${opacity})`,
+              labelColor: () => "#1e3a8a",
+            }}
+            bezier
+            style={{ borderRadius: 12 }}
+          />
+        </ScrollView>
       </View>
       <View
         style={{
@@ -381,7 +510,12 @@ export default function AdminDashboard({ user, onLogout }) {
     <SafeAreaView style={{ flex: 1, backgroundColor: "#1e3a8a" }}>
       {renderHeader()}
       {view === "dashboard" && (
-        <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+        <ScrollView
+          contentContainerStyle={{ flexGrow: 1 }}
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          }
+        >
           {renderGrid()}
         </ScrollView>
       )}
